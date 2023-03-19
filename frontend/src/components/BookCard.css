@@ -1,0 +1,13 @@
+.book-card {
+    display: flex;
+    box-sizing: content-box;
+    border-radius: 3px;
+    padding: 3px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    background-color: rgb(254, 246, 229);
+}
+
+.book-card img {
+    display: inline-block;
+}

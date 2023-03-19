@@ -16,5 +16,6 @@ export default function useBooks() {
     useEffect(() => {
         loadAllBooks()
     }, [])
+    return {books}
 }
 
