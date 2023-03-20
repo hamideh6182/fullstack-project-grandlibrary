@@ -1,13 +1,14 @@
 import {Book} from "../models/Book";
+import "./BookCard.css"
 
-type Props = {
+type BookCardProps = {
     book: Book
 }
-export default function BookCard(props: Props) {
+export default function BookCard(props: BookCardProps) {
     return (
         <div>
             <div className={"book-card"}>
-                {props.book.img ? <img src={props.book.img} alt="Book"/> : <img alt="Book"/>}
+                {props.book.img ? <img src={props.book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
             </div>
             <div>
                 <h5>

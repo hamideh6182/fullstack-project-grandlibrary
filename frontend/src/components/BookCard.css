@@ -10,4 +10,6 @@
 
 .book-card img {
     display: inline-block;
+    width: 250px;
+    height: 150px;
 }

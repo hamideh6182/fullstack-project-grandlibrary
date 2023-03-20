@@ -34,9 +34,9 @@ class BookServiceTest {
 
     @Test
     void getAllBooksTest() {
-        //Given
-        when(bookRepository.findAll()).thenReturn(new ArrayList<>());
         //WHEN
+        when(bookRepository.findAll()).thenReturn(new ArrayList<>());
+        //GIVEN
         List<Book> actual = bookService.getAllBooks();
         List<Book> expected = new ArrayList<>();
         //THEN
