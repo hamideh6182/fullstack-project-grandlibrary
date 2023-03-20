@@ -1,0 +1,12 @@
+.book-gallery {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    border-radius: 3px;
+}
+
+.book-gallery div {
+    border-radius: 3px;
+    padding: 15px;
+    background-color: rgb(86, 200, 131);
+}
