@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -65,5 +65,36 @@ class BookControllerTest {
                                                 }
                         ]
                         """));
+    }
+
+    @Test
+    @DirtiesContext
+    void addBookTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                                        "title" : "JavaBook",
+                                                        "author" : "Hamideh Aghdam",
+                                                        "description" : "About Java",
+                                                        "copies" : 10,
+                                                        "category" : "Programming",
+                                                        "img" : "http://imgage.com/img1.png"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        """
+                                {
+                                                        "title" : "JavaBook",
+                                                        "author" : "Hamideh Aghdam",
+                                                        "description" : "About Java",
+                                                        "copies" : 10,
+                                                        "copiesAvailable" : 10,
+                                                        "category" : "Programming",
+                                                        "img" : "http://imgage.com/img1.png"
+                                }
+                                           """
+                )).andExpect(jsonPath("$.id").isNotEmpty());
     }
 }
