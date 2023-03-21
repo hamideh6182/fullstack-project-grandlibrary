@@ -1,0 +1,43 @@
+.add-book-bg {
+    background: linear-gradient(45deg, #56c883, darkcyan);
+    height: 100vh;
+}
+
+.add-book {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 40px;
+    margin: 40px;
+    background-color: rgb(254, 246, 229);
+    border-radius: 15px;
+    font-family: Arial, sans-serif;
+    font-size: 17px;
+    box-shadow: 20px 20px 40px -6px rgb(0, 0, 0, 0.5)
+}
+
+.h1-add-book {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.add-book input, textarea {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #56c883;
+    outline: none;
+    background: transparent;
+}
+
+.add-book button {
+    width: 250px;
+    background-color: #56c883;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
