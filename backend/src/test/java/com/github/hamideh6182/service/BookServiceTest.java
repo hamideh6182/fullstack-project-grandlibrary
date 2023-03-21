@@ -22,23 +22,23 @@ class BookServiceTest {
 
     @BeforeEach
     void setUp() {
-        book1 = new Book(
-                "1",
+        bookRequest1 = new BookRequest(
                 "JavaBook",
                 "Hamideh Aghdam",
                 "About Java",
                 10,
-                10,
                 "Programming",
                 "http://imgage.com/img1.png"
         );
-        bookRequest1 = new BookRequest(
-                book1.title(),
-                book1.author(),
-                book1.description(),
-                book1.copies(),
-                book1.category(),
-                book1.img()
+        book1 = new Book(
+                "1",
+                bookRequest1.title(),
+                bookRequest1.author(),
+                bookRequest1.description(),
+                bookRequest1.copies(),
+                bookRequest1.copies(),
+                bookRequest1.category(),
+                bookRequest1.img()
         );
         bookRepository = mock(BookRepository.class);
         idService = mock(IdService.class);
