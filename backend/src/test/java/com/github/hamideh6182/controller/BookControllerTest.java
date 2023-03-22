@@ -1,5 +1,7 @@
 package com.github.hamideh6182.controller;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.Uploader;
 import com.github.hamideh6182.model.Book;
 import com.github.hamideh6182.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,11 +9,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Map;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -21,6 +30,9 @@ class BookControllerTest {
     MockMvc mockMvc;
     @Autowired
     BookRepository bookRepository;
+    @MockBean
+    Cloudinary cloudinary;
+    Uploader uploader = mock(Uploader.class);
     Book book1;
 
     @BeforeEach
@@ -70,18 +82,21 @@ class BookControllerTest {
     @Test
     @DirtiesContext
     void addBookTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/books")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                                        "title" : "JavaBook",
-                                                        "author" : "Hamideh Aghdam",
-                                                        "description" : "About Java",
-                                                        "copies" : 10,
-                                                        "category" : "Programming",
-                                                        "img" : "http://imgage.com/img1.png"
-                                }
-                                """))
+        when(cloudinary.uploader()).thenReturn(uploader);
+        when(uploader.upload(any(), anyMap())).thenReturn(Map.of("url", "http://imgage.com/img1.png"));
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/api/books")
+                        .file(new MockMultipartFile("bookRequest", null, "application/json",
+                                """
+                                        {
+                                                                "title" : "JavaBook",
+                                                                "author" : "Hamideh Aghdam",
+                                                                "description" : "About Java",
+                                                                "copies" : 10,
+                                                                "category" : "Programming"
+                                        }
+                                        """.getBytes()))
+                        .file(new MockMultipartFile("file", "content".getBytes()))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         """
