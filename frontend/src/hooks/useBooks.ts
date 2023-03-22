@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {Book} from "../models/Book";
 import axios from "axios";
-import {BookRequest} from "../models/BookRequest";
 
 export default function useBooks() {
     const [books, setBooks] = useState<Book[]>([])
@@ -14,10 +13,17 @@ export default function useBooks() {
             .catch(console.error)
     }
 
-    function postNewBook(newBook: BookRequest) {
-        return axios.post("/api/books", newBook)
+    function postNewBook(newBook: Book, file: File) {
+        const payload = new FormData();
+        if (!file) {
+            return;
+        }
+        payload.append('file', file)
+        payload.append("bookRequest", new Blob([JSON.stringify(newBook)], {type: "application/json"}));
+        return axios.post("/api/books", payload)
             .then(response => response.data)
             .then(data => setBooks(prevState => [...prevState, data]))
+            .catch(console.error)
     }
 
     useEffect(() => {
