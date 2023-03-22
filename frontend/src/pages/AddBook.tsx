@@ -1,10 +1,11 @@
 import {BookRequest} from "../models/BookRequest";
 import {ChangeEvent, FormEvent, useState} from "react";
-import axios from "axios";
 import "./AddBook.css"
+import {Book} from "../models/Book";
+import {useNavigate} from "react-router-dom";
 
 type AddBookProps = {
-    onAddBook: (newBook: BookRequest) => Promise<void>
+    onAddBook: (newBook: Book, file: File) => void
 }
 
 export default function AddBook(props: AddBookProps) {
@@ -14,7 +15,7 @@ export default function AddBook(props: AddBookProps) {
     const [copies, setCopies] = useState<number>(0)
     const [category, setCategory] = useState<string>("")
     const [file, setFile] = useState<File | null>(null);
-    const [url, setUrl] = useState<string>("");
+    const navigate = useNavigate()
 
     function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
         setTitle(event.target.value)
@@ -44,29 +45,16 @@ export default function AddBook(props: AddBookProps) {
 
     function formSubmitHandler(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
-        const book: BookRequest = {title, author, description, copies, category, img: url}
         const payload = new FormData();
         if (!file) {
             return;
         }
         payload.set('file', file);
-        axios.post("/api/photos", payload)
-            .then(res => {
-                setUrl(res.data)
-                console.log(res);
-            })
-            .catch(err => {
-                console.error(err);
-            })
-        props.onAddBook(book)
-            .then(() => {
-                setTitle("")
-                setAuthor("")
-                setDescription("")
-                setCopies(0)
-                setCategory("")
-                setUrl("")
-            })
+        const book: BookRequest = {title, author, description, copies, category}
+        if (file && book) {
+            props.onAddBook(book, file)
+            navigate("/books")
+        }
     }
 
     return (
