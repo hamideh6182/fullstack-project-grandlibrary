@@ -5,8 +5,7 @@ public record BookRequest(
         String author,
         String description,
         int copies,
-        String category,
-        String img
+        String category
 ) {
 
 }
