@@ -32,11 +32,19 @@ export default function AddBook(props: AddBookProps) {
         setCopies(Number(event.target.value))
     }
 
-    function handleCategoryChange(event: ChangeEvent<HTMLInputElement>) {
+    function handleCategoryChange(event: ChangeEvent<HTMLSelectElement>) {
         setCategory(event.target.value)
     }
 
-    function handleImgChange() {
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            setFile(event.target.files[0]);
+        }
+    }
+
+    function formSubmitHandler(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        const book: BookRequest = {title, author, description, copies, category, img: url}
         const payload = new FormData();
         if (!file) {
             return;
@@ -50,17 +58,6 @@ export default function AddBook(props: AddBookProps) {
             .catch(err => {
                 console.error(err);
             })
-    }
-
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files.length > 0) {
-            setFile(event.target.files[0]);
-        }
-    }
-
-    function formSubmitHandler(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        const book: BookRequest = {title, author, description, copies, category, img: url}
         props.onAddBook(book)
             .then(() => {
                 setTitle("")
@@ -90,8 +87,13 @@ export default function AddBook(props: AddBookProps) {
                     </div>
                     <div>
                         <label>Category</label><br/>
-                        <input type={"text"} name={"category"} value={category} required={true}
-                               onChange={handleCategoryChange}/>
+                        <select name={"category"} value={category} required={true} onChange={handleCategoryChange}>
+                            <option value={"sci-fiction"}>Sci-Fiction</option>
+                            <option value={"Fantasy"}>Fantasy</option>
+                            <option value={"health"}>Health</option>
+                            <option value={"development"}>Development</option>
+                            <option value={"programming"}>Programming</option>
+                        </select>
                     </div>
                     <div>
                         <label>Description</label><br/>
@@ -105,7 +107,6 @@ export default function AddBook(props: AddBookProps) {
                         Upload image:<br/>
                         <input type={"file"} onChange={handleFileChange} accept={"image/jpeg, image/png"}/>
                     </label>
-                    <button onClick={handleImgChange}>Upload!</button>
                     <div>
                         <button type={"submit"}>Add Book</button>
                     </div>
