@@ -5,6 +5,7 @@ import com.github.hamideh6182.model.BookRequest;
 import com.github.hamideh6182.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class BookController {
     }
 
     @PostMapping
-    public Book addBook(@RequestBody BookRequest bookRequest) {
-        return bookService.addBook(bookRequest);
+    public Book addBook(@RequestPart("bookRequest") BookRequest bookRequest, @RequestPart(value = "file", required = false) MultipartFile photo) {
+        return bookService.addBook(bookRequest, photo);
     }
 }
