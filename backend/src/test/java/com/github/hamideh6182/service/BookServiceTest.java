@@ -6,7 +6,9 @@ import com.github.hamideh6182.repository.BookRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,8 @@ class BookServiceTest {
     BookRepository bookRepository;
     BookService bookService;
     IdService idService;
+    PhotoService photoService;
+    MultipartFile multipartFile;
 
     @BeforeEach
     void setUp() {
@@ -27,22 +31,23 @@ class BookServiceTest {
                 "Hamideh Aghdam",
                 "About Java",
                 10,
-                "Programming",
-                "http://imgage.com/img1.png"
+                "Programming"
         );
         book1 = new Book(
                 "1",
-                bookRequest1.title(),
-                bookRequest1.author(),
-                bookRequest1.description(),
-                bookRequest1.copies(),
-                bookRequest1.copies(),
-                bookRequest1.category(),
-                bookRequest1.img()
+                "JavaBook",
+                "Hamideh Aghdam",
+                "About Java",
+                10,
+                10,
+                "Programming",
+                "http:photo.com"
         );
         bookRepository = mock(BookRepository.class);
         idService = mock(IdService.class);
-        bookService = new BookService(bookRepository, idService);
+        photoService = mock(PhotoService.class);
+        multipartFile = mock(MultipartFile.class);
+        bookService = new BookService(bookRepository, idService, photoService);
     }
 
     @Test
@@ -58,12 +63,13 @@ class BookServiceTest {
     }
 
     @Test
-    void addBookTest() {
+    void addBookTest() throws IOException {
         //WHEN
         when(idService.generateId()).thenReturn("1");
         when(bookRepository.save(book1)).thenReturn(book1);
+        when(photoService.uploadPhoto(multipartFile)).thenReturn(book1.img());
         //GIVEN
-        Book actual = bookService.addBook(bookRequest1);
+        Book actual = bookService.addBook(bookRequest1, multipartFile);
         Book expected = book1;
         //THEN
         verify(idService).generateId();
@@ -81,10 +87,9 @@ class BookServiceTest {
                 book1.author(),
                 book1.description(),
                 book1.copies(),
-                book1.category(),
-                book1.img()
+                book1.category()
         );
         //THEN
-        assertThrows(IllegalArgumentException.class, () -> bookService.addBook(invalidBook));
+        assertThrows(IllegalArgumentException.class, () -> bookService.addBook(invalidBook, multipartFile));
     }
 }
