@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     private static final String MESSAGE = "message";
 
     @ExceptionHandler(BookNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleTaskNotFoundException(BookNotFoundException exception) {
+    public ResponseEntity<Map<String, Object>> handleBookNotFoundException(BookNotFoundException exception) {
         Map<String, Object> responseBody = new LinkedHashMap<>();
         responseBody.put(TIMESTAMP, Instant.now());
         responseBody.put(MESSAGE, exception.getMessage());
