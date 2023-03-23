@@ -1,5 +1,6 @@
 import {Book} from "../models/Book";
 import BookCard from "../components/BookCard";
+import "./BooksGallery.css"
 
 type Props = {
     books: Book[]

@@ -6,8 +6,8 @@ type BookCardProps = {
 }
 export default function BookCard(props: BookCardProps) {
     return (
-        <div>
-            <div className={"book-card"}>
+        <div className={"book-card"}>
+            <div>
                 {props.book.img ? <img src={props.book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
             </div>
             <div>

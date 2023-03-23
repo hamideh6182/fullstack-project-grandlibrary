@@ -1,11 +1,11 @@
 package com.github.hamideh6182.controller;
 
 import com.github.hamideh6182.model.Book;
+import com.github.hamideh6182.model.BookRequest;
 import com.github.hamideh6182.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,5 +18,10 @@ public class BookController {
     @GetMapping
     public List<Book> getAllBooks() {
         return bookService.getAllBooks();
+    }
+
+    @PostMapping
+    public Book addBook(@RequestPart("bookRequest") BookRequest bookRequest, @RequestPart(value = "file", required = false) MultipartFile photo) {
+        return bookService.addBook(bookRequest, photo);
     }
 }
