@@ -29,4 +29,9 @@ public class BookController {
     public Book addBook(@RequestPart("bookRequest") BookRequest bookRequest, @RequestPart(value = "file", required = false) MultipartFile photo) {
         return bookService.addBook(bookRequest, photo);
     }
+
+    @DeleteMapping("{id}")
+    public Book deleteBook(@PathVariable String id) {
+        return bookService.deleteBook(id);
+    }
 }

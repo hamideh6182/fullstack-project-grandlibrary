@@ -1,5 +1,6 @@
 package com.github.hamideh6182.service;
 
+import com.github.hamideh6182.exception.BookNotFoundException;
 import com.github.hamideh6182.model.Book;
 import com.github.hamideh6182.model.BookRequest;
 import com.github.hamideh6182.repository.BookRepository;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,5 +55,14 @@ public class BookService {
                 photoUri
         );
         return bookRepository.save(newBook);
+    }
+
+    public Book deleteBook(String id) {
+        Optional<Book> book = bookRepository.findById(id);
+        if (book.isEmpty()) {
+            throw new BookNotFoundException("Book not found");
+        }
+        bookRepository.delete(book.get());
+        return book.get();
     }
 }
