@@ -20,6 +20,11 @@ public class BookController {
         return bookService.getAllBooks();
     }
 
+    @GetMapping("{id}")
+    public Book getBookById(@PathVariable String id) {
+        return bookService.getBookById(id);
+    }
+
     @PostMapping
     public Book addBook(@RequestPart("bookRequest") BookRequest bookRequest, @RequestPart(value = "file", required = false) MultipartFile photo) {
         return bookService.addBook(bookRequest, photo);
