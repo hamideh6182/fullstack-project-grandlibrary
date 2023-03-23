@@ -1,5 +1,6 @@
 package com.github.hamideh6182.service;
 
+import com.github.hamideh6182.exception.BookNotFoundException;
 import com.github.hamideh6182.model.Book;
 import com.github.hamideh6182.model.BookRequest;
 import com.github.hamideh6182.repository.BookRepository;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -114,5 +116,26 @@ class BookServiceTest {
         );
         //THEN
         assertThrows(IllegalArgumentException.class, () -> bookService.addBook(invalidBook, multipartFile));
+    }
+
+    @Test
+    void deleteBook_whenBookDoesntExist_thenThrowException() {
+        //WHEN
+        when(bookRepository.findById("4")).thenReturn(Optional.empty());
+        //THEN
+        assertThrows(BookNotFoundException.class, () -> bookService.deleteBook("4"));
+        verify(bookRepository).findById("4");
+    }
+
+    @Test
+    void deleteBook_whenBookExists_thenReturnBook() {
+        //WHEN
+        when(bookRepository.findById("1")).thenReturn(Optional.ofNullable(book1));
+        //GIVEN
+        Book actual = bookService.deleteBook(book1.id());
+        Book expected = book1;
+        //THEN
+        verify(bookRepository).findById("1");
+        assertEquals(expected, actual);
     }
 }
