@@ -83,7 +83,6 @@ class BookServiceTest {
         //THEN
         assertThrows(NoSuchElementException.class, () -> bookService.getBookById("2"));
         verify(bookRepository).findById("2");
-
     }
 
     @Test
