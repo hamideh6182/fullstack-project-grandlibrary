@@ -1,7 +1,5 @@
-package exception;
+package com.github.hamideh6182.exception;
 
-import com.github.hamideh6182.exception.BookNotFoundException;
-import com.github.hamideh6182.exception.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
