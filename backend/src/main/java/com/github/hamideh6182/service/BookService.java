@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,10 @@ public class BookService {
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
+    }
+
+    public Book getBookById(String id) {
+        return bookRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     public Book addBook(BookRequest bookRequest, MultipartFile photo) {

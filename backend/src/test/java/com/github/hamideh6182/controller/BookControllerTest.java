@@ -81,6 +81,26 @@ class BookControllerTest {
 
     @Test
     @DirtiesContext
+    void getBookByIdTest() throws Exception {
+        bookRepository.save(book1);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                                                {
+                                                "id" : "1",
+                                                "title" : "JavaBook",
+                                                "author" : "Hamideh Aghdam",
+                                                "description" : "About Java",
+                                                "copies" : 10,
+                                                "copiesAvailable" : 10,
+                                                "category" : "Programming",
+                                                "img" : "http://imgage.com/img1.png"
+                                                }
+                        """));
+    }
+
+    @Test
+    @DirtiesContext
     void addBookTest() throws Exception {
         when(cloudinary.uploader()).thenReturn(uploader);
         when(uploader.upload(any(), anyMap())).thenReturn(Map.of("url", "http://imgage.com/img1.png"));

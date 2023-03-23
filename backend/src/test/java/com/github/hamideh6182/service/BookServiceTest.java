@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -60,6 +62,27 @@ class BookServiceTest {
         //THEN
         verify(bookRepository).findAll();
         Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void getBookByIdTest_WhenBookExist() {
+        //WHEN
+        when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
+        //GIVEN
+        Book actual = bookService.getBookById("1");
+        Book expected = book1;
+        //THEN
+        verify(bookRepository).findById("1");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void getBookByIdTest_WhenBookDoesNotExist_ThenThrowException() {
+        //WHEN
+        when(bookRepository.findById("2")).thenReturn(Optional.empty());
+        //THEN
+        assertThrows(NoSuchElementException.class, () -> bookService.getBookById("2"));
+        verify(bookRepository).findById("2");
     }
 
     @Test
