@@ -23,6 +23,7 @@ class BookServiceTest {
     Book book1;
     Book book2;
     Book book3;
+    Book book4;
     BookRequest bookRequest1;
     BookRepository bookRepository;
     BookService bookService;
@@ -66,6 +67,16 @@ class BookServiceTest {
                 "About Java",
                 9,
                 9,
+                "Programming",
+                "http:photo.com"
+        );
+        book4 = new Book(
+                "1",
+                "JavaBook",
+                "Hamideh Aghdam",
+                "About Java",
+                0,
+                0,
                 "Programming",
                 "http:photo.com"
         );
@@ -176,6 +187,15 @@ class BookServiceTest {
     }
 
     @Test
+    void increaseBookQuantityTest_whenBookDoesntExist_thenThrowException() {
+        //WHEN
+        when(bookRepository.findById("4")).thenReturn(Optional.empty());
+        //THEN
+        assertThrows(BookNotFoundException.class, () -> bookService.increaseBookQuantity("4"));
+        verify(bookRepository).findById("4");
+    }
+
+    @Test
     void decreaseBookQuantityTest_WhenQuantityMinusOne() {
         //WHEN
         when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
@@ -187,5 +207,23 @@ class BookServiceTest {
         verify(bookRepository).findById("1");
         verify(bookRepository).save(book3);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void decreaseBookQuantityTest_whenBookDoesntExist_thenThrowException() {
+        //WHEN
+        when(bookRepository.findById("4")).thenReturn(Optional.empty());
+        //THEN
+        assertThrows(BookNotFoundException.class, () -> bookService.decreaseBookQuantity("4"));
+        verify(bookRepository).findById("4");
+    }
+
+    @Test
+    void decreaseBookQuantityTest_whenBookExist_CopiesZero_thenThrowException() {
+        //WHEN
+        when(bookRepository.findById("4")).thenReturn(Optional.of(book4));
+        //THEN
+        assertThrows(BookNotFoundException.class, () -> bookService.decreaseBookQuantity("4"));
+        verify(bookRepository).findById("4");
     }
 }
