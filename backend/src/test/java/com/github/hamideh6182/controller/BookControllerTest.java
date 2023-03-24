@@ -186,4 +186,37 @@ class BookControllerTest {
                                                                                                 }
                                                 """));
     }
+
+    @Test
+    @DirtiesContext
+    void decreaseBookQuantityTest_WhenQuantityMinusOne() throws Exception {
+        bookRepository.save(book1);
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/quantity/decrease/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                                                                                        "id" : "1",
+                                                                                                        "title" : "JavaBook",
+                                                                                                        "author" : "Hamideh Aghdam",
+                                                                                                        "description" : "About Java",
+                                                                                                        "copies" : 10,
+                                                                                                        "copiesAvailable" : 10,
+                                                                                                        "category" : "Programming",
+                                                                                                        "img" : "http://imgage.com/img1.png"
+                                                                                                        }
+                                                         """)
+                ).andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                                                                                                "id" : "1",
+                                                                                                "title" : "JavaBook",
+                                                                                                "author" : "Hamideh Aghdam",
+                                                                                                "description" : "About Java",
+                                                                                                "copies" : 9,
+                                                                                                "copiesAvailable" : 9,
+                                                                                                "category" : "Programming",
+                                                                                                "img" : "http://imgage.com/img1.png"
+                                                                                                }
+                                                """));
+    }
 }

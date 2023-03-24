@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
 class BookServiceTest {
     Book book1;
     Book book2;
+    Book book3;
     BookRequest bookRequest1;
     BookRepository bookRepository;
     BookService bookService;
@@ -55,6 +56,16 @@ class BookServiceTest {
                 "About Java",
                 11,
                 11,
+                "Programming",
+                "http:photo.com"
+        );
+        book3 = new Book(
+                "1",
+                "JavaBook",
+                "Hamideh Aghdam",
+                "About Java",
+                9,
+                9,
                 "Programming",
                 "http:photo.com"
         );
@@ -161,6 +172,20 @@ class BookServiceTest {
         //THEN
         verify(bookRepository).findById("1");
         verify(bookRepository).save(book2);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void decreaseBookQuantityTest_WhenQuantityMinusOne() {
+        //WHEN
+        when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
+        when(bookRepository.save(book3)).thenReturn(book3);
+        //GIVEN
+        Book actual = bookService.decreaseBookQuantity(book1.id());
+        Book expected = book3;
+        //THEN
+        verify(bookRepository).findById("1");
+        verify(bookRepository).save(book3);
         assertEquals(expected, actual);
     }
 }
