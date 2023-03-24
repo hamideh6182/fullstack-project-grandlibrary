@@ -26,9 +26,17 @@ export default function useBooks() {
             .catch(console.error)
     }
 
+    function deleteBook(id: string) {
+        return axios.delete("/api/books/" + id)
+            .then(() => {
+                loadAllBooks()
+            })
+            .catch(console.error)
+    }
+
     useEffect(() => {
         loadAllBooks()
     }, [])
-    return {books, postNewBook}
+    return {books, postNewBook, deleteBook}
 }
 

@@ -132,4 +132,24 @@ class BookControllerTest {
                                            """
                 )).andExpect(jsonPath("$.id").isNotEmpty());
     }
+
+    @Test
+    @DirtiesContext
+    void deleteBook_WhenIdExist_ThenReturnBook() throws Exception {
+        bookRepository.save(book1);
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/books/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                                                                        "id" : "1",
+                                                                        "title" : "JavaBook",
+                                                                        "author" : "Hamideh Aghdam",
+                                                                        "description" : "About Java",
+                                                                        "copies" : 10,
+                                                                        "copiesAvailable" : 10,
+                                                                        "category" : "Programming",
+                                                                        "img" : "http://imgage.com/img1.png"
+                                                                        }
+                                         """));
+    }
 }

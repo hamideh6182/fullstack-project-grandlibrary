@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 
 type BookDetailsProps = {
     books: Book[]
+    deleteBook: (id: string) => Promise<void>
 }
 
 export default function BookDetails(props: BookDetailsProps) {
@@ -22,8 +23,14 @@ export default function BookDetails(props: BookDetailsProps) {
         )
     }
 
-    function HandleOnBackGalleryButtonClick() {
+    function handleOnBackGalleryButtonClick() {
         navigate("/Books")
+    }
+
+    function handleDeleteButoon() {
+        props.deleteBook(id || "undefined")
+            .then(() => navigate("/Books"))
+            .catch(console.error)
     }
 
     return (
@@ -43,7 +50,10 @@ export default function BookDetails(props: BookDetailsProps) {
                 </p>
             </div>
             <div>
-                <button onClick={HandleOnBackGalleryButtonClick}>Back To Gallery</button>
+                <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
+            </div>
+            <div>
+                <button onClick={handleDeleteButoon}>Delete</button>
             </div>
         </div>
     )
