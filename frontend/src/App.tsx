@@ -11,9 +11,9 @@ function App() {
   return (
       <div className="App">
           <Routes>
-              <Route path={"/Books"} element={<BooksGallery books={books}/>}/>
-              <Route path={"/Books/add"} element={<AddBook onAddBook={postNewBook}/>}/>
-              <Route path={"/Books/:id"} element={<BookDetails books={books} deleteBook={deleteBook}
+              <Route path={"/books"} element={<BooksGallery books={books}/>}/>
+              <Route path={"/books/add"} element={<AddBook onAddBook={postNewBook}/>}/>
+              <Route path={"/books/:id"} element={<BookDetails books={books} deleteBook={deleteBook}
                                                                updateBookIncrease={updateBookIncrease}/>}/>
           </Routes>
       </div>
