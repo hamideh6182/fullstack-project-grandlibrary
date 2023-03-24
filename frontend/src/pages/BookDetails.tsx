@@ -37,13 +37,11 @@ export default function BookDetails(props: BookDetailsProps) {
 
     function handleIncreaseBookQuantity() {
         props.updateBookIncrease(id || "undefined")
-            .then(() => navigate("/Books"))
             .catch(console.error)
     }
 
     function handleDecreaseBookQuantity() {
         props.updateBookDecrease(id || "undefined")
-            .then(() => navigate("/Books"))
             .catch(console.error)
     }
 
@@ -51,6 +49,10 @@ export default function BookDetails(props: BookDetailsProps) {
         <div className={"book-card"}>
             <div>
                 {book.img ? <img src={book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
+                <text>Copies :</text>
+                {book.copies}<br/>
+                <text>Copies Available :</text>
+                {book.copiesAvailable}
             </div>
             <div>
                 <h5>
