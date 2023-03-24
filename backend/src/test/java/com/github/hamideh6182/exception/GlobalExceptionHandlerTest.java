@@ -20,23 +20,26 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void testHandleBookNotFoundException() {
-        // Setup
+        // GIVEN
         BookNotFoundException exception = new BookNotFoundException("Book not found");
-        // Execute
         ResponseEntity<Map<String, Object>> response = globalExceptionHandler.handleBookNotFoundException(exception);
-        // Verify
+        Object actual = response.getBody().get("message");
+        Object expected = "Book not found";
+        // THEN
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Book not found", response.getBody().get("message"));
+        assertEquals(expected, actual);
         assertNotNull(response.getBody().get("timestamp"));
     }
 
     @Test
     void testHandleGeneralException() {
-        // Execute
+        // GIVEN
         ResponseEntity<Map<String, Object>> response = globalExceptionHandler.handleGeneralException();
-        // Verify
+        Object actual = response.getBody().get("message");
+        Object expected = "Sorry, Bad request";
+        // THEN
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Sorry, Bad request", response.getBody().get("message"));
+        assertEquals(expected, actual);
         assertNotNull(response.getBody().get("timestamp"));
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -151,5 +152,38 @@ class BookControllerTest {
                                                                         "img" : "http://imgage.com/img1.png"
                                                                         }
                                          """));
+    }
+
+    @Test
+    @DirtiesContext
+    void increaseBookQuantityTest_WhenQuantityPlusOne() throws Exception {
+        bookRepository.save(book1);
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/quantity/increase/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                                                                                        "id" : "1",
+                                                                                                        "title" : "JavaBook",
+                                                                                                        "author" : "Hamideh Aghdam",
+                                                                                                        "description" : "About Java",
+                                                                                                        "copies" : 10,
+                                                                                                        "copiesAvailable" : 10,
+                                                                                                        "category" : "Programming",
+                                                                                                        "img" : "http://imgage.com/img1.png"
+                                                                                                        }
+                                                         """)
+                ).andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                                                                                                "id" : "1",
+                                                                                                "title" : "JavaBook",
+                                                                                                "author" : "Hamideh Aghdam",
+                                                                                                "description" : "About Java",
+                                                                                                "copies" : 11,
+                                                                                                "copiesAvailable" : 11,
+                                                                                                "category" : "Programming",
+                                                                                                "img" : "http://imgage.com/img1.png"
+                                                                                                }
+                                                """));
     }
 }

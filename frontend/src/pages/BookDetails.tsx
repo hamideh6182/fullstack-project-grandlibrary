@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 type BookDetailsProps = {
     books: Book[]
     deleteBook: (id: string) => Promise<void>
+    updateBookIncrease: (id: string) => Promise<void>
 }
 
 export default function BookDetails(props: BookDetailsProps) {
@@ -27,8 +28,14 @@ export default function BookDetails(props: BookDetailsProps) {
         navigate("/Books")
     }
 
-    function handleDeleteButoon() {
+    function handleDeleteButton() {
         props.deleteBook(id || "undefined")
+            .then(() => navigate("/Books"))
+            .catch(console.error)
+    }
+
+    function handleIncreaseBookQuantity() {
+        props.updateBookIncrease(id || "undefined")
             .then(() => navigate("/Books"))
             .catch(console.error)
     }
@@ -53,7 +60,10 @@ export default function BookDetails(props: BookDetailsProps) {
                 <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
             </div>
             <div>
-                <button onClick={handleDeleteButoon}>Delete</button>
+                <button onClick={handleDeleteButton}>Delete</button>
+            </div>
+            <div>
+                <button onClick={handleIncreaseBookQuantity}>Increase Quantity</button>
             </div>
         </div>
     )

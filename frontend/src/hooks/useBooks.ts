@@ -34,9 +34,22 @@ export default function useBooks() {
             .catch(console.error)
     }
 
+    function updateBookIncrease(id: string) {
+        return axios.put("/api/books/quantity/increase/" + id)
+            .then(response => response.data)
+            .then(data => setBooks(prevState => {
+                return prevState.map(currentBook => {
+                    if (currentBook.id === id) {
+                        return data
+                    }
+                    return currentBook
+                })
+            }))
+    }
+
     useEffect(() => {
         loadAllBooks()
     }, [])
-    return {books, postNewBook, deleteBook}
+    return {books, postNewBook, deleteBook, updateBookIncrease}
 }
 
