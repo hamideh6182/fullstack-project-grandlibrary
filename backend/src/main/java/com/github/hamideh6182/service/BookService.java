@@ -83,7 +83,6 @@ public class BookService {
                 book.get().category(),
                 book.get().img()
         );
-        bookRepository.save(newBook);
-        return book.get();
+        return bookRepository.save(newBook);
     }
 }

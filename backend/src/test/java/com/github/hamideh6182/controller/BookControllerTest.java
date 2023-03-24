@@ -179,8 +179,8 @@ class BookControllerTest {
                                                                                                 "title" : "JavaBook",
                                                                                                 "author" : "Hamideh Aghdam",
                                                                                                 "description" : "About Java",
-                                                                                                "copies" : 10,
-                                                                                                "copiesAvailable" : 10,
+                                                                                                "copies" : 11,
+                                                                                                "copiesAvailable" : 11,
                                                                                                 "category" : "Programming",
                                                                                                 "img" : "http://imgage.com/img1.png"
                                                                                                 }
