@@ -6,6 +6,7 @@ type BookDetailsProps = {
     books: Book[]
     deleteBook: (id: string) => Promise<void>
     updateBookIncrease: (id: string) => Promise<void>
+    updateBookDecrease: (id: string) => Promise<void>
 }
 
 export default function BookDetails(props: BookDetailsProps) {
@@ -40,6 +41,12 @@ export default function BookDetails(props: BookDetailsProps) {
             .catch(console.error)
     }
 
+    function handleDecreaseBookQuantity() {
+        props.updateBookDecrease(id || "undefined")
+            .then(() => navigate("/Books"))
+            .catch(console.error)
+    }
+
     return (
         <div className={"book-card"}>
             <div>
@@ -64,6 +71,9 @@ export default function BookDetails(props: BookDetailsProps) {
             </div>
             <div>
                 <button onClick={handleIncreaseBookQuantity}>Increase Quantity</button>
+            </div>
+            <div>
+                <button onClick={handleDecreaseBookQuantity}>Decrease Quantity</button>
             </div>
         </div>
     )
