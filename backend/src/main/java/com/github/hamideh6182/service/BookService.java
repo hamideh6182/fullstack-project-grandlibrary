@@ -65,4 +65,25 @@ public class BookService {
         bookRepository.delete(book.get());
         return book.get();
     }
+
+    public Book increaseBookQuantity(String id) {
+        Optional<Book> book = bookRepository.findById(id);
+        if (book.isEmpty()) {
+            throw new BookNotFoundException("Book not found");
+        }
+        int newCopies = book.get().copies() + 1;
+        int newCopiesAvailable = book.get().copiesAvailable() + 1;
+        Book newBook = new Book(
+                id,
+                book.get().title(),
+                book.get().author(),
+                book.get().description(),
+                newCopies,
+                newCopiesAvailable,
+                book.get().category(),
+                book.get().img()
+        );
+        bookRepository.save(newBook);
+        return book.get();
+    }
 }

@@ -34,4 +34,9 @@ public class BookController {
     public Book deleteBook(@PathVariable String id) {
         return bookService.deleteBook(id);
     }
+
+    @PutMapping("{id}")
+    public Book increaseBookQuantity(@PathVariable String id) {
+        return bookService.increaseBookQuantity(id);
+    }
 }

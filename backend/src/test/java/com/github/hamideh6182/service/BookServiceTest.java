@@ -138,4 +138,16 @@ class BookServiceTest {
         verify(bookRepository).findById("1");
         assertEquals(expected, actual);
     }
+
+    @Test
+    void increaseBookQuantityTest_WhenQuantityPlusOne() {
+        //WHEN
+        when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
+        //GIVEN
+        Book actual = bookService.increaseBookQuantity(book1.id());
+        Book expected = book1;
+        //THEN
+        verify(bookRepository).findById("1");
+        assertEquals(expected, actual);
+    }
 }
