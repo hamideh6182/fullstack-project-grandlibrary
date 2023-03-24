@@ -158,7 +158,7 @@ class BookControllerTest {
     @DirtiesContext
     void increaseBookQuantityTest_WhenQuantityPlusOne() throws Exception {
         bookRepository.save(book1);
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/1")
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/quantity/increase/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
