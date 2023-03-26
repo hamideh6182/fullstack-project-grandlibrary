@@ -1,10 +1,14 @@
 .book-card {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(15rem, 1fr));
+    align-items: center;
+    justify-content: center;
     box-sizing: content-box;
-    border-radius: 10px;
     padding: 10px;
     margin: 15px;
-    background-color: rgb(254, 246, 229);
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 20px 20px 20px -6px rgb(0, 0, 0, 0.2)
 }
 
 .book-card img {
@@ -12,4 +16,22 @@
     width: 150px;
     height: 250px;
     margin: 5px;
+}
+.book-card div {
+    width: 250px;
+}
+.book-card button {
+    width: 100%;
+    margin: 10px;
+    display: inline-block;
+    cursor: pointer;
+    background-color: #56c883;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.book-card button:hover {
+    background: rgb(246,130,8);
 }
