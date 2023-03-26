@@ -3,6 +3,7 @@ import {ChangeEvent, FormEvent, useState} from "react";
 import "./AddBook.css"
 import {Book} from "../models/Book";
 import {useNavigate} from "react-router-dom";
+import Layout from "../components/Layout";
 
 type AddBookProps = {
     onAddBook: (newBook: Book, file: File) => void
@@ -58,12 +59,13 @@ export default function AddBook(props: AddBookProps) {
     }
 
     return (
+        <Layout>
         <div className={"add-book-bg"}>
             <h1 className={"h1-add-book"}>
-                Add a new book
+                Add a <span>new book</span>
             </h1>
-            <div>
-                <form className={"add-book"} onSubmit={formSubmitHandler}>
+            <div className={"add-book"}>
+                <form onSubmit={formSubmitHandler}>
                     <div>
                         <label>Title</label><br/>
                         <input type={"text"} name={"title"} value={title} required={true} onChange={handleTitleChange}/>
@@ -91,15 +93,16 @@ export default function AddBook(props: AddBookProps) {
                         <label>Copies</label><br/>
                         <input type={"number"} value={copies} onChange={handleCopiesChange}/>
                     </div>
+                    <div>
                     <label>
                         Upload image:<br/>
                         <input type={"file"} onChange={handleFileChange} accept={"image/jpeg, image/png"}/>
                     </label>
-                    <div>
-                        <button type={"submit"}>Add Book</button>
                     </div>
+                        <button type={"submit"}>Add Book</button>
                 </form>
             </div>
         </div>
+        </Layout>
     )
 }

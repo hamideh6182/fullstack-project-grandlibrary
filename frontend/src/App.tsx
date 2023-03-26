@@ -5,6 +5,7 @@ import BooksGallery from "./pages/BooksGallery";
 import useBooks from "./hooks/useBooks";
 import AddBook from "./pages/AddBook";
 import BookDetails from "./pages/BookDetails";
+import Home from "./pages/Home";
 
 function App() {
     const {books, postNewBook, deleteBook, updateBookIncrease, updateBookDecrease} = useBooks()
@@ -16,6 +17,7 @@ function App() {
               <Route path={"/books/:id"} element={<BookDetails books={books} deleteBook={deleteBook}
                                                                updateBookIncrease={updateBookIncrease}
                                                                updateBookDecrease={updateBookDecrease}/>}/>
+              <Route path={"/"} element={<Home/>}/>
           </Routes>
       </div>
   );

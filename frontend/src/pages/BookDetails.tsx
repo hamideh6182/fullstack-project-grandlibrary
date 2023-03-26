@@ -1,6 +1,7 @@
 import {Book} from "../models/Book";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
+import Layout from "../components/Layout";
 
 type BookDetailsProps = {
     books: Book[]
@@ -46,13 +47,11 @@ export default function BookDetails(props: BookDetailsProps) {
     }
 
     return (
+        <Layout>
+            <h1 className={"h1-book-gallery"}>Book <span>Details</span></h1>
         <div className={"book-card"}>
             <div>
                 {book.img ? <img src={book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
-                <text>Copies :</text>
-                {book.copies}<br/>
-                <text>Copies Available :</text>
-                {book.copiesAvailable}
             </div>
             <div>
                 <h5>
@@ -64,20 +63,19 @@ export default function BookDetails(props: BookDetailsProps) {
                 <p>
                     {book.description}
                 </p>
+                <text>Copies :</text>
+                {book.copies}<br/>
+                <text>Copies Available :</text>
+                {book.copiesAvailable}
             </div>
             <div>
                 <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
-            </div>
-            <div>
                 <button onClick={handleDeleteButton}>Delete</button>
-            </div>
-            <div>
                 <button onClick={handleIncreaseBookQuantity}>Increase Quantity</button>
-            </div>
-            <div>
                 <button onClick={handleDecreaseBookQuantity}>Decrease Quantity</button>
             </div>
         </div>
+        </Layout>
     )
 }
 
