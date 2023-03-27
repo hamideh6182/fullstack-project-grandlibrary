@@ -40,6 +40,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/api/csrf").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                .requestMatchers(HttpMethod.GET, "api/books").permitAll()
+                .requestMatchers(HttpMethod.POST, "api/books/{id}").permitAll()
                 .requestMatchers(HttpMethod.POST, "api/books").hasRole(ADMIN)
                 .requestMatchers(HttpMethod.DELETE, "api/books/{id}").hasRole(ADMIN)
                 .requestMatchers(HttpMethod.PUT, "api/books/quantity/increase/{id}").hasRole(ADMIN)
