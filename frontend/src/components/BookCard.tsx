@@ -18,7 +18,7 @@ export default function BookCard(props: BookCardProps) {
                 {props.book.img ? <img src={props.book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
 
             </div>
-            <div>
+            <div className={"book-card-div"}>
                 <h5>
                     {props.book.author}
                 </h5>
@@ -26,9 +26,9 @@ export default function BookCard(props: BookCardProps) {
                     {props.book.title}
                 </h4>
                 <div>
-                <p>
-                    {props.book.description}
-                </p>
+                    <p>
+                        {props.book.description}
+                    </p>
                 </div>
                 <text>Copies :</text>
                 {props.book.copies}<br/>
