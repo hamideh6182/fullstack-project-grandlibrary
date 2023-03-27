@@ -1,11 +1,13 @@
 import {Book} from "../models/Book";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
+import Layout from "../components/Layout";
 
 type BookDetailsProps = {
     books: Book[]
     deleteBook: (id: string) => Promise<void>
     updateBookIncrease: (id: string) => Promise<void>
+    updateBookDecrease: (id: string) => Promise<void>
 }
 
 export default function BookDetails(props: BookDetailsProps) {
@@ -36,11 +38,17 @@ export default function BookDetails(props: BookDetailsProps) {
 
     function handleIncreaseBookQuantity() {
         props.updateBookIncrease(id || "undefined")
-            .then(() => navigate("/Books"))
+            .catch(console.error)
+    }
+
+    function handleDecreaseBookQuantity() {
+        props.updateBookDecrease(id || "undefined")
             .catch(console.error)
     }
 
     return (
+        <Layout>
+            <h1 className={"h1-book-gallery"}>Book <span>Details</span></h1>
         <div className={"book-card"}>
             <div>
                 {book.img ? <img src={book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
@@ -55,17 +63,19 @@ export default function BookDetails(props: BookDetailsProps) {
                 <p>
                     {book.description}
                 </p>
+                <text>Copies :</text>
+                {book.copies}<br/>
+                <text>Copies Available :</text>
+                {book.copiesAvailable}
             </div>
             <div>
                 <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
-            </div>
-            <div>
                 <button onClick={handleDeleteButton}>Delete</button>
-            </div>
-            <div>
                 <button onClick={handleIncreaseBookQuantity}>Increase Quantity</button>
+                <button onClick={handleDecreaseBookQuantity}>Decrease Quantity</button>
             </div>
         </div>
+        </Layout>
     )
 }
 

@@ -22,6 +22,8 @@ import static org.mockito.Mockito.*;
 class BookServiceTest {
     Book book1;
     Book book2;
+    Book book3;
+    Book book4;
     BookRequest bookRequest1;
     BookRepository bookRepository;
     BookService bookService;
@@ -55,6 +57,26 @@ class BookServiceTest {
                 "About Java",
                 11,
                 11,
+                "Programming",
+                "http:photo.com"
+        );
+        book3 = new Book(
+                "1",
+                "JavaBook",
+                "Hamideh Aghdam",
+                "About Java",
+                9,
+                9,
+                "Programming",
+                "http:photo.com"
+        );
+        book4 = new Book(
+                "1",
+                "JavaBook",
+                "Hamideh Aghdam",
+                "About Java",
+                0,
+                0,
                 "Programming",
                 "http:photo.com"
         );
@@ -162,5 +184,46 @@ class BookServiceTest {
         verify(bookRepository).findById("1");
         verify(bookRepository).save(book2);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void increaseBookQuantityTest_whenBookDoesntExist_thenThrowException() {
+        //WHEN
+        when(bookRepository.findById("4")).thenReturn(Optional.empty());
+        //THEN
+        assertThrows(BookNotFoundException.class, () -> bookService.increaseBookQuantity("4"));
+        verify(bookRepository).findById("4");
+    }
+
+    @Test
+    void decreaseBookQuantityTest_WhenQuantityMinusOne() {
+        //WHEN
+        when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
+        when(bookRepository.save(book3)).thenReturn(book3);
+        //GIVEN
+        Book actual = bookService.decreaseBookQuantity(book1.id());
+        Book expected = book3;
+        //THEN
+        verify(bookRepository).findById("1");
+        verify(bookRepository).save(book3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void decreaseBookQuantityTest_whenBookDoesntExist_thenThrowException() {
+        //WHEN
+        when(bookRepository.findById("4")).thenReturn(Optional.empty());
+        //THEN
+        assertThrows(BookNotFoundException.class, () -> bookService.decreaseBookQuantity("4"));
+        verify(bookRepository).findById("4");
+    }
+
+    @Test
+    void decreaseBookQuantityTest_whenBookExist_CopiesZero_thenThrowException() {
+        //WHEN
+        when(bookRepository.findById("4")).thenReturn(Optional.of(book4));
+        //THEN
+        assertThrows(BookNotFoundException.class, () -> bookService.decreaseBookQuantity("4"));
+        verify(bookRepository).findById("4");
     }
 }

@@ -16,6 +16,7 @@ export default function BookCard(props: BookCardProps) {
         <div className={"book-card"}>
             <div>
                 {props.book.img ? <img src={props.book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
+
             </div>
             <div>
                 <h5>
@@ -24,9 +25,15 @@ export default function BookCard(props: BookCardProps) {
                 <h4>
                     {props.book.title}
                 </h4>
+                <div>
                 <p>
                     {props.book.description}
                 </p>
+                </div>
+                <text>Copies :</text>
+                {props.book.copies}<br/>
+                <text>Copies Available :</text>
+                {props.book.copiesAvailable}
             </div>
             <div>
                 <button onClick={HandleOnDetailsButtonClick}>Details</button>

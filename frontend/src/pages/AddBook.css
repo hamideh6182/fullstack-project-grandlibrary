@@ -1,32 +1,37 @@
 .add-book-bg {
-    background: linear-gradient(45deg, #56c883, darkcyan);
     height: 100vh;
 }
 
 .add-book {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
     padding: 40px;
     margin: 40px;
-    background-color: rgb(254, 246, 229);
-    border-radius: 15px;
     font-family: Arial, sans-serif;
     font-size: 17px;
+    background-color: white;
+    border-radius: 5px;
     box-shadow: 20px 20px 40px -6px rgb(0, 0, 0, 0.5)
 }
 
 .h1-add-book {
     text-align: center;
-    font-family: Arial, sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     padding: 20px;
 }
 
-.add-book input, textarea {
+.h1-add-book span {
+    color: #ff7800;
+}
+
+.add-book input, textarea, select {
+    width: 100%;
     padding: 10px;
     font-size: 16px;
     margin-bottom: 30px;
-    border: none;
-    border-bottom: 1px solid #56c883;
+    border: 1px solid #56c883;
+    border-radius: 5px;
     outline: none;
     background: transparent;
 }

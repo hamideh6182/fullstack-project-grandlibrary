@@ -3,10 +3,17 @@
     flex-flow: column nowrap;
     justify-content: space-between;
     border-radius: 3px;
+    gap: 20px;
 }
-
+.h1-book-gallery {
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 20px;
+}
+.h1-book-gallery span {
+    color: #ff7800;
+}
 .book-gallery div {
     border-radius: 3px;
     padding: 15px;
-    background-color: rgb(86, 200, 131);
 }

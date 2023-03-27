@@ -85,4 +85,24 @@ public class BookService {
         );
         return bookRepository.save(newBook);
     }
+
+    public Book decreaseBookQuantity(String id) {
+        Optional<Book> book = bookRepository.findById(id);
+        if (book.isEmpty() || book.get().copies() <= 0 || book.get().copiesAvailable() <= 0) {
+            throw new BookNotFoundException("Book not found or quantity locked");
+        }
+        int newCopies = book.get().copies() - 1;
+        int newCopiesAvailable = book.get().copiesAvailable() - 1;
+        Book newBook = new Book(
+                id,
+                book.get().title(),
+                book.get().author(),
+                book.get().description(),
+                newCopies,
+                newCopiesAvailable,
+                book.get().category(),
+                book.get().img()
+        );
+        return bookRepository.save(newBook);
+    }
 }
