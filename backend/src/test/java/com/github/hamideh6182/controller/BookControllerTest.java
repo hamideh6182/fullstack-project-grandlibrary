@@ -109,11 +109,11 @@ class BookControllerTest {
                         .file(new MockMultipartFile("bookRequest", null, "application/json",
                                 """
                                         {
-                                                                "title" : "JavaBook",
-                                                                "author" : "Hamideh Aghdam",
-                                                                "description" : "About Java",
-                                                                "copies" : 10,
-                                                                "category" : "Programming"
+                                                 "title" : "JavaBook",
+                                                 "author" : "Hamideh Aghdam",
+                                                 "description" : "About Java",
+                                                 "copies" : 10,
+                                                 "category" : "Programming"
                                         }
                                         """.getBytes()))
                         .file(new MockMultipartFile("file", "content".getBytes()))
@@ -122,13 +122,13 @@ class BookControllerTest {
                 .andExpect(content().json(
                         """
                                 {
-                                                        "title" : "JavaBook",
-                                                        "author" : "Hamideh Aghdam",
-                                                        "description" : "About Java",
-                                                        "copies" : 10,
-                                                        "copiesAvailable" : 10,
-                                                        "category" : "Programming",
-                                                        "img" : "http://imgage.com/img1.png"
+                                                 "title" : "JavaBook",
+                                                 "author" : "Hamideh Aghdam",
+                                                 "description" : "About Java",
+                                                 "copies" : 10,
+                                                 "copiesAvailable" : 10,
+                                                 "category" : "Programming",
+                                                 "img" : "http://imgage.com/img1.png"
                                 }
                                            """
                 )).andExpect(jsonPath("$.id").isNotEmpty());
@@ -142,15 +142,15 @@ class BookControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
-                                                                        "id" : "1",
-                                                                        "title" : "JavaBook",
-                                                                        "author" : "Hamideh Aghdam",
-                                                                        "description" : "About Java",
-                                                                        "copies" : 10,
-                                                                        "copiesAvailable" : 10,
-                                                                        "category" : "Programming",
-                                                                        "img" : "http://imgage.com/img1.png"
-                                                                        }
+                                                    "id" : "1",
+                                                    "title" : "JavaBook",
+                                                    "author" : "Hamideh Aghdam",
+                                                    "description" : "About Java",
+                                                    "copies" : 10,
+                                                    "copiesAvailable" : 10,
+                                                    "category" : "Programming",
+                                                    "img" : "http://imgage.com/img1.png"
+                        }
                                          """));
     }
 
@@ -162,28 +162,28 @@ class BookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
-                                                                                                        "id" : "1",
-                                                                                                        "title" : "JavaBook",
-                                                                                                        "author" : "Hamideh Aghdam",
-                                                                                                        "description" : "About Java",
-                                                                                                        "copies" : 10,
-                                                                                                        "copiesAvailable" : 10,
-                                                                                                        "category" : "Programming",
-                                                                                                        "img" : "http://imgage.com/img1.png"
-                                                                                                        }
+                                                     "id" : "1",
+                                                     "title" : "JavaBook",
+                                                     "author" : "Hamideh Aghdam",
+                                                     "description" : "About Java",
+                                                     "copies" : 10,
+                                                     "copiesAvailable" : 10,
+                                                     "category" : "Programming",
+                                                     "img" : "http://imgage.com/img1.png"
+                                }
                                                          """)
                 ).andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
-                                                                                                "id" : "1",
-                                                                                                "title" : "JavaBook",
-                                                                                                "author" : "Hamideh Aghdam",
-                                                                                                "description" : "About Java",
-                                                                                                "copies" : 11,
-                                                                                                "copiesAvailable" : 11,
-                                                                                                "category" : "Programming",
-                                                                                                "img" : "http://imgage.com/img1.png"
-                                                                                                }
+                                                      "id" : "1",
+                                                      "title" : "JavaBook",
+                                                      "author" : "Hamideh Aghdam",
+                                                      "description" : "About Java",
+                                                      "copies" : 11,
+                                                      "copiesAvailable" : 11,
+                                                      "category" : "Programming",
+                                                      "img" : "http://imgage.com/img1.png"
+                        }
                                                 """));
     }
 
@@ -195,28 +195,28 @@ class BookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
-                                                                                                        "id" : "1",
-                                                                                                        "title" : "JavaBook",
-                                                                                                        "author" : "Hamideh Aghdam",
-                                                                                                        "description" : "About Java",
-                                                                                                        "copies" : 10,
-                                                                                                        "copiesAvailable" : 10,
-                                                                                                        "category" : "Programming",
-                                                                                                        "img" : "http://imgage.com/img1.png"
-                                                                                                        }
+                                                        "id" : "1",
+                                                        "title" : "JavaBook",
+                                                        "author" : "Hamideh Aghdam",
+                                                        "description" : "About Java",
+                                                        "copies" : 10,
+                                                        "copiesAvailable" : 10,
+                                                        "category" : "Programming",
+                                                        "img" : "http://imgage.com/img1.png"
+                                }
                                                          """)
                 ).andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
-                                                                                                "id" : "1",
-                                                                                                "title" : "JavaBook",
-                                                                                                "author" : "Hamideh Aghdam",
-                                                                                                "description" : "About Java",
-                                                                                                "copies" : 9,
-                                                                                                "copiesAvailable" : 9,
-                                                                                                "category" : "Programming",
-                                                                                                "img" : "http://imgage.com/img1.png"
-                                                                                                }
+                                                          "id" : "1",
+                                                          "title" : "JavaBook",
+                                                          "author" : "Hamideh Aghdam",
+                                                          "description" : "About Java",
+                                                          "copies" : 9,
+                                                          "copiesAvailable" : 9,
+                                                          "category" : "Programming",
+                                                          "img" : "http://imgage.com/img1.png"
+                        }
                                                 """));
     }
 }
