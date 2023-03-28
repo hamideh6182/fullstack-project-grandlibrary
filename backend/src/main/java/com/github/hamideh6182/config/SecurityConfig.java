@@ -16,13 +16,10 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
-    private static final String ADMIN = "ADMIN";
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
@@ -38,14 +35,11 @@ public class SecurityConfig {
                 .sessionManagement(config ->
                         config.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, "/api/books").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/books/{id}").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/csrf").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                .requestMatchers(HttpMethod.GET, "api/books").permitAll()
-                .requestMatchers(HttpMethod.GET, "api/books/{id}").permitAll()
-                .requestMatchers(HttpMethod.POST, "api/books").hasRole(ADMIN)
-                .requestMatchers(HttpMethod.DELETE, "api/books/{id}").hasRole(ADMIN)
-                .requestMatchers(HttpMethod.PUT, "api/books/quantity/increase/{id}").hasRole(ADMIN)
-                .requestMatchers(HttpMethod.PUT, "api/books/quantity/decrease/{id}").hasRole(ADMIN)
+                .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll().and()
                 .build();
     }
