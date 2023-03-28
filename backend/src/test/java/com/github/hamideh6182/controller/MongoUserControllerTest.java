@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MongoUserControllerTest {
     @Autowired
     MockMvc mockMvc;
-
     @Test
     @DirtiesContext
     @WithMockUser(username = "user", password = "123")
@@ -43,7 +42,6 @@ class MongoUserControllerTest {
                         }
                                         """));
     }
-
     @Test
     @DirtiesContext
     @WithMockUser(username = "user", password = "123")
