@@ -8,6 +8,7 @@ import BookDetails from "./pages/BookDetails";
 import Home from "./pages/Home";
 import axios from "axios";
 import Cookies from "js-cookie";
+import SignUp from "./pages/SignUp";
 
 axios.interceptors.request.use(function (config) {
     return fetch("/api/csrf").then(() => {
@@ -23,13 +24,15 @@ function App() {
     return (
         <div className="App">
             <Routes>
+                <Route path={"/"} element={<Home/>}/>
+                <Route path={"/sign-up"} element={<SignUp/>}/>
                 <Route path={"/books"} element={<BooksGallery books={books}/>}/>
                 <Route path={"/books/add"} element={<AddBook onAddBook={postNewBook}/>}/>
                 <Route path={"/books/:id"} element={<BookDetails books={books} deleteBook={deleteBook}
                                                                  updateBookIncrease={updateBookIncrease}
-                                                               updateBookDecrease={updateBookDecrease}/>}/>
-              <Route path={"/"} element={<Home/>}/>
-          </Routes>
+                                                                 updateBookDecrease={updateBookDecrease}/>}/>
+
+            </Routes>
       </div>
   );
 }
