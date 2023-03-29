@@ -1,6 +1,7 @@
 import {ChangeEvent, FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import "./SignForm.css"
 
 type Props = {
     action: "sign-up" | "sign-in"
