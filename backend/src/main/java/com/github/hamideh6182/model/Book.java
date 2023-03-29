@@ -13,6 +13,7 @@ public record Book(
         int copies,
         int copiesAvailable,
         String category,
-        String img
+        String img,
+        String userId
 ) {
 }

@@ -1,0 +1,9 @@
+.h1-sign-up {
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 20px;
+}
+
+.h1-sign-up span {
+    color: #ff7800;
+}

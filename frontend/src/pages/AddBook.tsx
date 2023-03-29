@@ -4,6 +4,7 @@ import "./AddBook.css"
 import {Book} from "../models/Book";
 import {useNavigate} from "react-router-dom";
 import Layout from "../components/Layout";
+import useAuth from "../hooks/useAuth";
 
 type AddBookProps = {
     onAddBook: (newBook: Book, file: File) => void
@@ -17,6 +18,7 @@ export default function AddBook(props: AddBookProps) {
     const [category, setCategory] = useState<string>("")
     const [file, setFile] = useState<File | null>(null);
     const navigate = useNavigate()
+    const user = useAuth(true)
 
     function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
         setTitle(event.target.value)
@@ -58,17 +60,18 @@ export default function AddBook(props: AddBookProps) {
         }
     }
 
-    return (
+    return !user ? null : (
         <Layout>
-        <div className={"add-book-bg"}>
-            <h1 className={"h1-add-book"}>
-                Add a <span>new book</span>
-            </h1>
-            <div className={"add-book"}>
-                <form onSubmit={formSubmitHandler}>
-                    <div>
-                        <label>Title</label><br/>
-                        <input type={"text"} name={"title"} value={title} required={true} onChange={handleTitleChange}/>
+            <div className={"add-book-bg"}>
+                <h1 className={"h1-add-book"}>
+                    Add a <span>new book</span>
+                </h1>
+                <div className={"add-book"}>
+                    <form onSubmit={formSubmitHandler}>
+                        <div>
+                            <label>Title</label><br/>
+                            <input type={"text"} name={"title"} value={title} required={true}
+                                   onChange={handleTitleChange}/>
                     </div>
                     <div>
                         <label>Author</label><br/>

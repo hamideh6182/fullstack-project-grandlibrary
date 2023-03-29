@@ -3,6 +3,7 @@ package com.github.hamideh6182.service;
 import com.github.hamideh6182.exception.BookNotFoundException;
 import com.github.hamideh6182.model.Book;
 import com.github.hamideh6182.model.BookRequest;
+import com.github.hamideh6182.model.MongoUserResponse;
 import com.github.hamideh6182.repository.BookRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -30,6 +32,8 @@ class BookServiceTest {
     IdService idService;
     PhotoService photoService;
     MultipartFile multipartFile;
+    MongoUserDetailsService mongoUserDetailsService;
+    Principal principal;
 
     @BeforeEach
     void setUp() {
@@ -48,7 +52,8 @@ class BookServiceTest {
                 10,
                 10,
                 "Programming",
-                "http:photo.com"
+                "http:photo.com",
+                "1a"
         );
         book2 = new Book(
                 "1",
@@ -58,7 +63,8 @@ class BookServiceTest {
                 11,
                 11,
                 "Programming",
-                "http:photo.com"
+                "http:photo.com",
+                "1a"
         );
         book3 = new Book(
                 "1",
@@ -68,7 +74,8 @@ class BookServiceTest {
                 9,
                 9,
                 "Programming",
-                "http:photo.com"
+                "http:photo.com",
+                "1a"
         );
         book4 = new Book(
                 "1",
@@ -78,13 +85,16 @@ class BookServiceTest {
                 0,
                 0,
                 "Programming",
-                "http:photo.com"
+                "http:photo.com",
+                "1a"
         );
         bookRepository = mock(BookRepository.class);
         idService = mock(IdService.class);
+        mongoUserDetailsService = mock(MongoUserDetailsService.class);
+        principal = mock(Principal.class);
         photoService = mock(PhotoService.class);
         multipartFile = mock(MultipartFile.class);
-        bookService = new BookService(bookRepository, idService, photoService);
+        bookService = new BookService(bookRepository, idService, photoService, mongoUserDetailsService);
     }
 
     @Test
@@ -126,12 +136,14 @@ class BookServiceTest {
         when(idService.generateId()).thenReturn("1");
         when(bookRepository.save(book1)).thenReturn(book1);
         when(photoService.uploadPhoto(multipartFile)).thenReturn(book1.img());
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
         //GIVEN
-        Book actual = bookService.addBook(bookRequest1, multipartFile);
+        Book actual = bookService.addBook(bookRequest1, multipartFile, principal);
         Book expected = book1;
         //THEN
         verify(idService).generateId();
         verify(bookRepository).save(book1);
+        verify(mongoUserDetailsService).getMe(principal);
         Assertions.assertEquals(expected, actual);
     }
 
@@ -148,27 +160,31 @@ class BookServiceTest {
                 book1.category()
         );
         //THEN
-        assertThrows(IllegalArgumentException.class, () -> bookService.addBook(invalidBook, multipartFile));
+        assertThrows(IllegalArgumentException.class, () -> bookService.addBook(invalidBook, multipartFile, principal));
     }
 
     @Test
     void deleteBook_whenBookDoesntExist_thenThrowException() {
         //WHEN
         when(bookRepository.findById("4")).thenReturn(Optional.empty());
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
         //THEN
-        assertThrows(BookNotFoundException.class, () -> bookService.deleteBook("4"));
+        assertThrows(BookNotFoundException.class, () -> bookService.deleteBook("4", principal));
         verify(bookRepository).findById("4");
+        verify(mongoUserDetailsService).getMe(principal);
     }
 
     @Test
     void deleteBook_whenBookExists_thenReturnBook() {
         //WHEN
         when(bookRepository.findById("1")).thenReturn(Optional.ofNullable(book1));
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
         //GIVEN
-        Book actual = bookService.deleteBook(book1.id());
+        Book actual = bookService.deleteBook(book1.id(), principal);
         Book expected = book1;
         //THEN
         verify(bookRepository).findById("1");
+        verify(mongoUserDetailsService).getMe(principal);
         assertEquals(expected, actual);
     }
 
@@ -177,12 +193,14 @@ class BookServiceTest {
         //WHEN
         when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
         when(bookRepository.save(book2)).thenReturn(book2);
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
         //GIVEN
-        Book actual = bookService.increaseBookQuantity(book1.id());
+        Book actual = bookService.increaseBookQuantity(book1.id(), principal);
         Book expected = book2;
         //THEN
         verify(bookRepository).findById("1");
         verify(bookRepository).save(book2);
+        verify(mongoUserDetailsService).getMe(principal);
         assertEquals(expected, actual);
     }
 
@@ -190,9 +208,11 @@ class BookServiceTest {
     void increaseBookQuantityTest_whenBookDoesntExist_thenThrowException() {
         //WHEN
         when(bookRepository.findById("4")).thenReturn(Optional.empty());
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
         //THEN
-        assertThrows(BookNotFoundException.class, () -> bookService.increaseBookQuantity("4"));
+        assertThrows(BookNotFoundException.class, () -> bookService.increaseBookQuantity("4", principal));
         verify(bookRepository).findById("4");
+        verify(mongoUserDetailsService).getMe(principal);
     }
 
     @Test
@@ -200,12 +220,14 @@ class BookServiceTest {
         //WHEN
         when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
         when(bookRepository.save(book3)).thenReturn(book3);
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
         //GIVEN
-        Book actual = bookService.decreaseBookQuantity(book1.id());
+        Book actual = bookService.decreaseBookQuantity(book1.id(), principal);
         Book expected = book3;
         //THEN
         verify(bookRepository).findById("1");
         verify(bookRepository).save(book3);
+        verify(mongoUserDetailsService).getMe(principal);
         assertEquals(expected, actual);
     }
 
@@ -213,17 +235,21 @@ class BookServiceTest {
     void decreaseBookQuantityTest_whenBookDoesntExist_thenThrowException() {
         //WHEN
         when(bookRepository.findById("4")).thenReturn(Optional.empty());
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
         //THEN
-        assertThrows(BookNotFoundException.class, () -> bookService.decreaseBookQuantity("4"));
+        assertThrows(BookNotFoundException.class, () -> bookService.decreaseBookQuantity("4", principal));
         verify(bookRepository).findById("4");
+        verify(mongoUserDetailsService).getMe(principal);
     }
 
     @Test
     void decreaseBookQuantityTest_whenBookExist_CopiesZero_thenThrowException() {
         //WHEN
         when(bookRepository.findById("4")).thenReturn(Optional.of(book4));
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
         //THEN
-        assertThrows(BookNotFoundException.class, () -> bookService.decreaseBookQuantity("4"));
+        assertThrows(BookNotFoundException.class, () -> bookService.decreaseBookQuantity("4", principal));
         verify(bookRepository).findById("4");
+        verify(mongoUserDetailsService).getMe(principal);
     }
 }

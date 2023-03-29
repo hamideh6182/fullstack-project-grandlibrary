@@ -7,4 +7,5 @@ export type Book = {
     copiesAvailable?: number,
     category?: string,
     img?: string
+    userId?: string
 }

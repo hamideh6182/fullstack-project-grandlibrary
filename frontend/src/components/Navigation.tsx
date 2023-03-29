@@ -13,7 +13,7 @@ export default function Navigation(){
                 <NavLink to={"/books/add"}>Add Book</NavLink>
             </div>
             <div className={"navigation-block"}>
-                <NavLink to={"#"}>Sign up</NavLink>
+                <NavLink to={"/sign-up"}>Sign up</NavLink>
                 <NavLink to={"#"}>Sign in</NavLink>
             </div>
         </div>

@@ -1,0 +1,57 @@
+.signup-form input[type=text], .signup-form input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+:focus-visible {
+    outline: #56c883 auto 1px;
+}
+
+.signup-form button {
+    width: 100%;
+    background-color: #56c883;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+}
+
+.signup-form button:hover {
+    background-color: #56c883;
+}
+
+.signup-form {
+    margin: 0 auto;
+    width: 22%;
+    display: grid;
+    justify-content: center;
+    border-radius: 5px;
+    background-color: rgba(198, 198, 198, 0.1);
+    padding: 20px;
+}
+
+.signup-form .form-error {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    padding: 0.5rem;
+    border: 1px solid red;
+    display: inline-block;
+}
+
+.signup-form .form-success {
+    color: #56c883;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    padding: 0.5rem;
+    border: 1px solid #56c883;
+    display: inline-block;
+}
