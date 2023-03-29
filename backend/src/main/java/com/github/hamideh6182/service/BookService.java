@@ -23,7 +23,6 @@ public class BookService {
     private final IdService idService;
     private final PhotoService photoService;
     private final MongoUserDetailsService mongoUserDetailsService;
-    private final static String MESSAGE = "Administration page only";
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
@@ -70,7 +69,7 @@ public class BookService {
             throw new BookNotFoundException("Book not found");
         }
         if (!book.get().userId().equals(adminId)) {
-            throw new UnauthorizedException(MESSAGE);
+            throw new UnauthorizedException("Administration page");
         }
         bookRepository.delete(book.get());
         return book.get();
@@ -83,7 +82,7 @@ public class BookService {
             throw new BookNotFoundException("Book not found");
         }
         if (!book.get().userId().equals(adminId)) {
-            throw new UnauthorizedException(MESSAGE);
+            throw new UnauthorizedException("Administration page only");
         }
         int newCopies = book.get().copies() + 1;
         int newCopiesAvailable = book.get().copiesAvailable() + 1;
@@ -108,7 +107,7 @@ public class BookService {
             throw new BookNotFoundException("Book not found or quantity locked");
         }
         if (!book.get().userId().equals(adminId)) {
-            throw new UnauthorizedException(MESSAGE);
+            throw new UnauthorizedException("Only Administration");
         }
         int newCopies = book.get().copies() - 1;
         int newCopiesAvailable = book.get().copiesAvailable() - 1;
