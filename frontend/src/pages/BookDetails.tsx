@@ -2,6 +2,7 @@ import {Book} from "../models/Book";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Layout from "../components/Layout";
+import useAuth from "../hooks/useAuth";
 
 type BookDetailsProps = {
     books: Book[]
@@ -14,6 +15,7 @@ export default function BookDetails(props: BookDetailsProps) {
     const params = useParams()
     const id = params.id
     const navigate = useNavigate()
+    const {isAdmin} = useAuth(false)
     const [book, setBook] = useState<Book | undefined>()
     useEffect(() => {
         const filteredBook = props.books.find(book => book.id === id);
@@ -70,9 +72,15 @@ export default function BookDetails(props: BookDetailsProps) {
             </div>
             <div>
                 <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
-                <button onClick={handleDeleteButton}>Delete</button>
-                <button onClick={handleIncreaseBookQuantity}>Increase Quantity</button>
-                <button onClick={handleDecreaseBookQuantity}>Decrease Quantity</button>
+                {isAdmin ?
+                    <>
+                        <button onClick={handleDeleteButton}>Delete</button>
+                        <button onClick={handleIncreaseBookQuantity}>Increase Quantity</button>
+                        <button onClick={handleDecreaseBookQuantity}>Decrease Quantity</button>
+                    </>
+                    :
+                    null
+                }
             </div>
         </div>
         </Layout>

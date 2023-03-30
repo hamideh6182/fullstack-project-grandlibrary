@@ -18,7 +18,7 @@ export default function AddBook(props: AddBookProps) {
     const [category, setCategory] = useState<string>("")
     const [file, setFile] = useState<File | null>(null);
     const navigate = useNavigate()
-    const user = useAuth(true)
+    const {isAdmin} = useAuth(false)
 
     function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
         setTitle(event.target.value)
@@ -60,7 +60,7 @@ export default function AddBook(props: AddBookProps) {
         }
     }
 
-    return !user ? null : (
+    return !isAdmin ? null : (
         <Layout>
             <div className={"add-book-bg"}>
                 <h1 className={"h1-add-book"}>
