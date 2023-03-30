@@ -13,12 +13,24 @@ import java.security.Principal;
 @RequestMapping("/api/users")
 public class MongoUserController {
     private final MongoUserDetailsService mongoUserDetailsService;
+
     @PostMapping
     public MongoUserResponse signup(@RequestBody MongoUserRequest user) {
         return mongoUserDetailsService.signup(user);
     }
+
     @GetMapping("/me")
     public MongoUserResponse getMe(Principal principal) {
         return mongoUserDetailsService.getMe(principal);
+    }
+
+    @PostMapping("/login")
+    public MongoUserResponse login(Principal principal) {
+        return getMe(principal);
+    }
+
+    @PostMapping("/logout")
+    public void logout() {
+        // this method exists only to define the endpoint!
     }
 }
