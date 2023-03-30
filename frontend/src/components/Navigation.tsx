@@ -14,7 +14,7 @@ export default function Navigation(){
             </div>
             <div className={"navigation-block"}>
                 <NavLink to={"/sign-up"}>Sign up</NavLink>
-                <NavLink to={"#"}>Sign in</NavLink>
+                <NavLink to={"/sign-in"}>Sign in</NavLink>
             </div>
         </div>
     )
