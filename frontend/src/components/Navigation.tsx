@@ -5,7 +5,7 @@ import useAuth from "../hooks/useAuth";
 
 export default function Navigation() {
     const location = useLocation()
-    const user = useAuth(false)
+    const {user} = useAuth(false)
     const {isAdmin} = useAuth(false)
 
     function handleLogOutClick() {
@@ -34,10 +34,9 @@ export default function Navigation() {
                     :
                     <>
                         <NavLink to={"/sign-up"}>Sign up</NavLink>
-                        <NavLink to={"/sign-in"}>Sign in</NavLink>
+                        {location.pathname !== "/sign-in" && <NavLink to={"/sign-in"}>Sign in</NavLink>}
                     </>
                 }
-
             </div>
         </div>
     )
