@@ -42,7 +42,6 @@ class BookControllerTest {
     @Autowired
     MongoUserRepository mongoUserRepository;
     MongoUser mongoUser;
-
     @BeforeEach
     void setUp() {
         book1 = new Book(
