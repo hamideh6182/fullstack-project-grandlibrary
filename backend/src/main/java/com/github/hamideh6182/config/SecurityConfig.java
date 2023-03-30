@@ -44,8 +44,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/books").hasRole(ADMIN)
                 .requestMatchers(HttpMethod.DELETE, "/api/books/{id}").hasRole(ADMIN)
-                .requestMatchers(HttpMethod.PUT, "/api/books//quantity/increase/{id}").hasRole(ADMIN)
-                .requestMatchers(HttpMethod.PUT, "/api/books//quantity/decrease/{id}").hasRole(ADMIN)
+                .requestMatchers(HttpMethod.PUT, "/api/books/quantity/increase/{id}").hasRole(ADMIN)
+                .requestMatchers(HttpMethod.PUT, "/api/books/quantity/decrease/{id}").hasRole(ADMIN)
                 .anyRequest().permitAll().and()
                 .logout(logout -> logout
                         .logoutUrl("/api/users/logout")
