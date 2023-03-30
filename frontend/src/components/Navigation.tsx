@@ -6,6 +6,7 @@ import useAuth from "../hooks/useAuth";
 export default function Navigation() {
     const location = useLocation()
     const user = useAuth(false)
+    const {isAdmin} = useAuth(false)
 
     function handleLogOutClick() {
         axios.post("/api/users/logout").then(() => {
@@ -25,7 +26,7 @@ export default function Navigation() {
             <div className={"navigation-block"}>
                 <NavLink to={"/"}>Home</NavLink>
                 <NavLink to={"/books"}>Gallery</NavLink>
-                {user && <NavLink to={"/books/add"}>Add Book</NavLink>}
+                {isAdmin && <NavLink to={"/books/add"}>Add Book</NavLink>}
             </div>
             <div className={"navigation-block"}>
                 {user ?
