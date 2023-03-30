@@ -17,7 +17,6 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
-    private static final String ADMIN = "ADMIN";
     @Bean
     public PasswordEncoder passwordEncoder() {
         return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
@@ -42,10 +41,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/csrf").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/books").hasRole(ADMIN)
-                .requestMatchers(HttpMethod.DELETE, "/api/books/{id}").hasRole(ADMIN)
-                .requestMatchers(HttpMethod.PUT, "/api/books/quantity/increase/{id}").hasRole(ADMIN)
-                .requestMatchers(HttpMethod.PUT, "/api/books/quantity/decrease/{id}").hasRole(ADMIN)
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll().and()
                 .logout(logout -> logout
