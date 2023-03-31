@@ -12,15 +12,18 @@ export default function BookCarousel() {
         },
         desktop: {
             breakpoint: {max: 3000, min: 1024},
-            items: 3
+            items: 3,
+            slidesToSlide: 3
         },
         tablet: {
             breakpoint: {max: 1024, min: 464},
-            items: 2
+            items: 2,
+            slidesToSlide: 2
         },
         mobile: {
             breakpoint: {max: 464, min: 0},
-            items: 1
+            items: 1,
+            slidesToSlide: 1
         }
     };
     const book = books.map(book => (
@@ -28,7 +31,11 @@ export default function BookCarousel() {
     ))
     return (
         <div className={"book-carousel-div"}>
-            <Carousel responsive={responsive}>
+            <Carousel swipeable={false}
+                      draggable={false}
+                      showDots={true}
+                      responsive={responsive}
+                      dotListClass="custom-dot-list-style">
                 {book}
             </Carousel>
         </div>
