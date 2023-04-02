@@ -1,13 +1,9 @@
 .book-card {
-    display: grid;
-    grid-template-columns:160px 230px;
-    grid-template-rows: auto;
-    grid-template-areas:
-     "image description"
-      "button button";
-    align-items: center;
+    display: flex;
     justify-content: center;
-    box-sizing: content-box;
+    align-items: flex-start;
+    flex-direction: column;
+    white-space: nowrap;
     padding: 10px;
     margin: 15px;
     background-color: white;
@@ -16,22 +12,36 @@
 }
 
 .book-card img {
-    grid-area: image;
-    width: 150px;
-    height: 250px;
+    width: 200px;
+    height: 300px;
     margin: 5px;
     border-radius: 5px;
 }
 
-.book-card-div {
-    grid-area: description;
-    width: 250px;
+.book-card-div-one {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.book-card-div-two {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.book-card-div-b {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .book-card button {
-    grid-area: button;
-    width: 100%;
-    margin: 10px;
+    width: 200px;
+    margin: 5px;
     cursor: pointer;
     background-color: #56c883;
     color: white;
