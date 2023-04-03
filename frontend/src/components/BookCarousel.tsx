@@ -27,7 +27,7 @@ export default function BookCarousel() {
         }
     };
     const book = books.map(book => (
-        <img className={"book-carousel-img"} src={book.img} alt={"book"}/>
+        <img className={"book-carousel-img"} src={book.img} key={book.id} alt={"book"}/>
     ))
     return (
         <div className={"book-carousel-div"}>
