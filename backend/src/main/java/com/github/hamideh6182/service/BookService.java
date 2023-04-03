@@ -4,13 +4,16 @@ import com.github.hamideh6182.exception.BookNotFoundException;
 import com.github.hamideh6182.exception.UnauthorizedException;
 import com.github.hamideh6182.model.Book;
 import com.github.hamideh6182.model.BookRequest;
+import com.github.hamideh6182.model.Checkout;
 import com.github.hamideh6182.repository.BookRepository;
+import com.github.hamideh6182.repository.CheckoutRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -23,6 +26,7 @@ public class BookService {
     private final IdService idService;
     private final PhotoService photoService;
     private final MongoUserDetailsService mongoUserDetailsService;
+    private final CheckoutRepository checkoutRepository;
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
@@ -123,5 +127,42 @@ public class BookService {
                 adminId
         );
         return bookRepository.save(newBook);
+    }
+
+    public Book checkoutBook(String userId, String bookId, Principal principal) {
+        String adminId = mongoUserDetailsService.getMe(principal).id();
+        Optional<Book> book = bookRepository.findById(bookId);
+
+        Checkout validateCheckout = checkoutRepository.findByUserIdAndBookId(userId, bookId);
+
+        if (book.isEmpty() || validateCheckout != null || book.get().copiesAvailable() <= 0) {
+            throw new BookNotFoundException("Book doesn't exist or already checked out by user");
+        }
+
+        int newCopiesAvailable = book.get().copiesAvailable() - 1;
+        Book newBook = new Book(
+                bookId,
+                book.get().title(),
+                book.get().author(),
+                book.get().description(),
+                book.get().copies(),
+                newCopiesAvailable,
+                book.get().category(),
+                book.get().img(),
+                adminId
+        );
+
+        bookRepository.save(newBook);
+
+        Checkout checkout = new Checkout(
+                userId,
+                LocalDate.now().toString(),
+                LocalDate.now().plusDays(14).toString(),
+                newBook.id()
+        );
+
+        checkoutRepository.save(checkout);
+
+        return newBook;
     }
 }
