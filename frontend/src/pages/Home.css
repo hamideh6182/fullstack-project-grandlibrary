@@ -25,14 +25,14 @@
 }
 
 .home-div-h1 {
-    font-family: "Snell Roundhand";
+    font-family: "Snell Roundhand", cursive;
     display: flex;
     justify-content: center;
     color: #56c883;
 }
 
 .home-div-p {
-    font-family: "Tahoma";
+    font-family: "Tahoma", cursive;
     display: flex;
     justify-content: center;
     margin-top: 10px;
