@@ -3,6 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Layout from "../components/Layout";
 import useAuth from "../hooks/useAuth";
+import "./BooksGallery.css"
 
 type BookDetailsProps = {
     books: Book[]
@@ -52,25 +53,28 @@ export default function BookDetails(props: BookDetailsProps) {
         <Layout>
             <h1 className={"h1-book-gallery"}>Book <span>Details</span></h1>
         <div className={"book-card"}>
-            <div>
+            <div className={"book-card-div-two"}>
                 {book.img ? <img src={book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
+
+                <div className={"book-card-div-one"}>
+                    <h5>
+                        {book.author}
+                    </h5>
+                    <h4>
+                        {book.title}
+                    </h4>
+                    <p>
+                        {book.description}
+                    </p>
+                    <text>
+                        Copies : {book.copies}
+                    </text>
+                    <text>
+                        Copies Available : {book.copiesAvailable}
+                    </text>
+                </div>
             </div>
-            <div>
-                <h5>
-                    {book.author}
-                </h5>
-                <h4>
-                    {book.title}
-                </h4>
-                <p>
-                    {book.description}
-                </p>
-                <text>Copies :</text>
-                {book.copies}<br/>
-                <text>Copies Available :</text>
-                {book.copiesAvailable}
-            </div>
-            <div>
+            <div className={"book-card-div-b"}>
                 <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
                 {isAdmin ?
                     <>

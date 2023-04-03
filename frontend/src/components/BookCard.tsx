@@ -13,30 +13,31 @@ export default function BookCard(props: BookCardProps) {
     }
 
     return (
-        <div className={"book-card"}>
-            <div>
-                {props.book.img ? <img src={props.book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
-
-            </div>
-            <div className={"book-card-div"}>
-                <h5>
-                    {props.book.author}
-                </h5>
-                <h4>
-                    {props.book.title}
-                </h4>
-                <div>
-                    <p>
-                        {props.book.description}
-                    </p>
+        <div>
+            <div className={"book-card"}>
+                <div className={"book-card-div-two"}>
+                    {props.book.img ? <img src={props.book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
+                    <div className={"book-card-div-one"}>
+                        <h5>
+                            {props.book.author}
+                        </h5>
+                        <h4>
+                            {props.book.title}
+                        </h4>
+                        <p>
+                            {props.book.description}
+                        </p>
+                        <text>
+                            Copies :{props.book.copies}
+                        </text>
+                        <text>
+                            Copies Available :{props.book.copiesAvailable}
+                        </text>
+                    </div>
                 </div>
-                <text>Copies :</text>
-                {props.book.copies}<br/>
-                <text>Copies Available :</text>
-                {props.book.copiesAvailable}
-            </div>
-            <div>
-                <button onClick={HandleOnDetailsButtonClick}>Details</button>
+                <div className={"book-card-div-b"}>
+                    <button onClick={HandleOnDetailsButtonClick}>Details</button>
+                </div>
             </div>
         </div>
     )
