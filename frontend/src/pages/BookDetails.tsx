@@ -10,6 +10,7 @@ type BookDetailsProps = {
     deleteBook: (id: string) => Promise<void>
     updateBookIncrease: (id: string) => Promise<void>
     updateBookDecrease: (id: string) => Promise<void>
+    checkoutBook: (uid: string, bid: string) => Promise<void>
 }
 
 export default function BookDetails(props: BookDetailsProps) {
