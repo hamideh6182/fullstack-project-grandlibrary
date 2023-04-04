@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CheckoutRepository extends MongoRepository<Checkout, String> {
-    Checkout findByUserIdAndId(String userId, String id);
+    Checkout findByUserIdAndBookId(String userId, String bookId);
 }
