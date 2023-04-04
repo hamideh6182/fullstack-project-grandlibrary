@@ -78,6 +78,7 @@ class BookControllerTest {
                 "1a"
         );
         checkout1 = new Checkout(
+                "1",
                 checkoutBook1.id(),
                 LocalDate.now().toString(),
                 LocalDate.now().plusDays(14).toString(),
