@@ -3,8 +3,10 @@ package com.github.hamideh6182.controller;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Uploader;
 import com.github.hamideh6182.model.Book;
+import com.github.hamideh6182.model.Checkout;
 import com.github.hamideh6182.model.MongoUser;
 import com.github.hamideh6182.repository.BookRepository;
+import com.github.hamideh6182.repository.CheckoutRepository;
 import com.github.hamideh6182.repository.MongoUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,13 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -35,15 +37,24 @@ class BookControllerTest {
     MockMvc mockMvc;
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    CheckoutRepository checkoutRepository;
     @MockBean
     Cloudinary cloudinary;
     Uploader uploader = mock(Uploader.class);
     Book book1;
+
+    Book checkoutBook1;
+    Checkout checkout1;
     @Autowired
     MongoUserRepository mongoUserRepository;
     MongoUser mongoUser;
+    MongoUser mongoUser2;
+
     @BeforeEach
     void setUp() {
+        mongoUser = new MongoUser("1a", "user", "password", "BASIC");
+        mongoUser2 = new MongoUser("2a", "user2", "password2", "BASIC");
         book1 = new Book(
                 "1",
                 "JavaBook",
@@ -55,7 +66,23 @@ class BookControllerTest {
                 "http://imgage.com/img1.png",
                 "1a"
         );
-        mongoUser = new MongoUser("1a", "user", "password", "BASIC");
+        checkoutBook1 = new Book(
+                "1",
+                "JavaBook",
+                "Hamideh Aghdam",
+                "About Java",
+                10,
+                9,
+                "Programming",
+                "http:photo.com",
+                "1a"
+        );
+        checkout1 = new Checkout(
+                checkoutBook1.id(),
+                LocalDate.now().toString(),
+                LocalDate.now().plusDays(14).toString(),
+                "2a"
+        );
     }
 
     @Test
@@ -180,20 +207,6 @@ class BookControllerTest {
         mongoUserRepository.save(mongoUser);
         bookRepository.save(book1);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/books/quantity/increase/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                                     "id" : "1",
-                                                     "title" : "JavaBook",
-                                                     "author" : "Hamideh Aghdam",
-                                                     "description" : "About Java",
-                                                     "copies" : 10,
-                                                     "copiesAvailable" : 10,
-                                                     "category" : "Programming",
-                                                     "img" : "http://imgage.com/img1.png",
-                                                     "userId" : "1a"
-                                }
-                                                         """)
                         .with(csrf())
                 ).andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -218,20 +231,6 @@ class BookControllerTest {
         mongoUserRepository.save(mongoUser);
         bookRepository.save(book1);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/books/quantity/decrease/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                                        "id" : "1",
-                                                        "title" : "JavaBook",
-                                                        "author" : "Hamideh Aghdam",
-                                                        "description" : "About Java",
-                                                        "copies" : 10,
-                                                        "copiesAvailable" : 10,
-                                                        "category" : "Programming",
-                                                        "img" : "http://imgage.com/img1.png",
-                                                        "userId" : "1a"
-                                }
-                                                         """)
                         .with(csrf())
                 ).andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -241,6 +240,32 @@ class BookControllerTest {
                                                           "author" : "Hamideh Aghdam",
                                                           "description" : "About Java",
                                                           "copies" : 9,
+                                                          "copiesAvailable" : 9,
+                                                          "category" : "Programming",
+                                                          "img" : "http://imgage.com/img1.png",
+                                                          "userId" : "1a"
+                        }
+                                                """));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser
+    void checkoutBook_withValidInput_shouldReturnNewBook() throws Exception {
+        mongoUserRepository.save(mongoUser2);
+        bookRepository.save(book1);
+        //checkoutRepository.save(checkout1);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/checkout/2a/1")
+                        .with(csrf())
+                ).andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                                                          "id" : "1",
+                                                          "title" : "JavaBook",
+                                                          "author" : "Hamideh Aghdam",
+                                                          "description" : "About Java",
+                                                          "copies" : 10,
                                                           "copiesAvailable" : 9,
                                                           "category" : "Programming",
                                                           "img" : "http://imgage.com/img1.png",

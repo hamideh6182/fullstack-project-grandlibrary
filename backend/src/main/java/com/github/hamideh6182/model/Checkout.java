@@ -1,9 +1,14 @@
 package com.github.hamideh6182.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("checkout")
 public record Checkout(
-        String userId,
+        @Id
+        String id,
         String checkoutDate,
         String returnDate,
-        String BookId
+        String userId
 ) {
 }

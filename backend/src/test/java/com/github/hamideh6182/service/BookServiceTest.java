@@ -106,10 +106,10 @@ class BookServiceTest {
                 "1a"
         );
         checkout1 = new Checkout(
-                "1a",
+                "1",
                 LocalDate.now().toString(),
                 LocalDate.now().plusDays(14).toString(),
-                "1"
+                "1a"
         );
         bookRepository = mock(BookRepository.class);
         idService = mock(IdService.class);
@@ -283,7 +283,7 @@ class BookServiceTest {
         //WHEN
         when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
         when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
-        when(checkoutRepository.findByUserIdAndBookId("1a", "1")).thenReturn(existingCheckout);
+        when(checkoutRepository.findByUserIdAndId("1a", "1")).thenReturn(existingCheckout);
         when(bookRepository.save(checkoutBook1)).thenReturn(checkoutBook1);
         when(checkoutRepository.save(checkout1)).thenReturn(checkout1);
         //GIVEN
@@ -292,7 +292,7 @@ class BookServiceTest {
         //THEN
         verify(bookRepository).findById("1");
         verify(mongoUserDetailsService).getMe(principal);
-        verify(checkoutRepository).findByUserIdAndBookId("1a", "1");
+        verify(checkoutRepository).findByUserIdAndId("1a", "1");
         verify(bookRepository).save(checkoutBook1);
         verify(checkoutRepository).save(checkout1);
         Assertions.assertEquals(expected, actual);
@@ -315,12 +315,12 @@ class BookServiceTest {
         //WHEN
         when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
         when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
-        when(checkoutRepository.findByUserIdAndBookId("1a", "1")).thenReturn(existingCheckout);
+        when(checkoutRepository.findByUserIdAndId("1a", "1")).thenReturn(existingCheckout);
         //THEN
         assertThrows(BookNotFoundException.class, () -> bookService.checkoutBook("1a", "1", principal));
         verify(bookRepository).findById("1");
         verify(mongoUserDetailsService).getMe(principal);
-        verify(checkoutRepository).findByUserIdAndBookId("1a", "1");
+        verify(checkoutRepository).findByUserIdAndId("1a", "1");
     }
 
 }

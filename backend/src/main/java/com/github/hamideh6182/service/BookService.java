@@ -133,7 +133,7 @@ public class BookService {
         String adminId = mongoUserDetailsService.getMe(principal).id();
         Optional<Book> book = bookRepository.findById(bookId);
 
-        Checkout validateCheckout = checkoutRepository.findByUserIdAndBookId(userId, bookId);
+        Checkout validateCheckout = checkoutRepository.findByUserIdAndId(userId, bookId);
 
         if (book.isEmpty() || validateCheckout != null || book.get().copiesAvailable() <= 0) {
             throw new BookNotFoundException("Book doesn't exist or already checked out by user");
@@ -155,10 +155,10 @@ public class BookService {
         bookRepository.save(newBook);
 
         Checkout checkout = new Checkout(
-                userId,
+                newBook.id(),
                 LocalDate.now().toString(),
                 LocalDate.now().plusDays(14).toString(),
-                newBook.id()
+                userId
         );
 
         checkoutRepository.save(checkout);
