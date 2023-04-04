@@ -60,9 +60,17 @@ export default function useBooks() {
             }))
     }
 
+    function checkoutBook(uid: string, bid: string) {
+        return axios.put("/api/books/checkout/" + uid + "/" + bid)
+            .then(() => {
+                loadAllBooks()
+            })
+            .catch(console.error)
+    }
+
     useEffect(() => {
         loadAllBooks()
     }, [])
-    return {books, postNewBook, deleteBook, updateBookIncrease, updateBookDecrease}
+    return {books, postNewBook, deleteBook, updateBookIncrease, updateBookDecrease, checkoutBook}
 }
 
