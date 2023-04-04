@@ -21,7 +21,7 @@ axios.interceptors.request.use(function (config) {
 });
 
 function App() {
-    const {books, postNewBook, deleteBook, updateBookIncrease, updateBookDecrease} = useBooks()
+    const {books, postNewBook, deleteBook, updateBookIncrease, updateBookDecrease, checkoutBook} = useBooks()
     return (
         <div className="App">
             <Routes>
@@ -32,7 +32,8 @@ function App() {
                 <Route path={"/books/add"} element={<AddBook onAddBook={postNewBook}/>}/>
                 <Route path={"/books/:id"} element={<BookDetails books={books} deleteBook={deleteBook}
                                                                  updateBookIncrease={updateBookIncrease}
-                                                                 updateBookDecrease={updateBookDecrease}/>}/>
+                                                                 updateBookDecrease={updateBookDecrease}
+                                                                 checkoutBook={checkoutBook}/>}/>
 
             </Routes>
       </div>
