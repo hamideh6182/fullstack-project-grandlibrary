@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public record Checkout(
         @Id
         String id,
+        String bookId,
         String checkoutDate,
         String returnDate,
         String userId
