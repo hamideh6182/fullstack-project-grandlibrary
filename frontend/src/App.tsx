@@ -33,8 +33,7 @@ function App() {
                 <Route path={"/books/:id"} element={<BookDetails books={books} deleteBook={deleteBook}
                                                                  updateBookIncrease={updateBookIncrease}
                                                                  updateBookDecrease={updateBookDecrease}
-                />}/>
-
+                                                                 checkoutBook={checkoutBook}/>}/>
             </Routes>
       </div>
   );
