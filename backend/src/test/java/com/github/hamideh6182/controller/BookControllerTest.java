@@ -250,7 +250,7 @@ class BookControllerTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser("user2")
     void checkoutBook_withValidInput_shouldReturnNewBook() throws Exception {
         mongoUserRepository.save(mongoUser2);
         bookRepository.save(book1);
@@ -269,7 +269,7 @@ class BookControllerTest {
                                                           "copiesAvailable" : 9,
                                                           "category" : "Programming",
                                                           "img" : "http://imgage.com/img1.png",
-                                                          "userId" : "1a"
+                                                          "userId" : "2a"
                         }
                                                 """));
     }
