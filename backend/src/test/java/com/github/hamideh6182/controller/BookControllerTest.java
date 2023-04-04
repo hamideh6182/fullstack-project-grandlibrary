@@ -254,7 +254,6 @@ class BookControllerTest {
     void checkoutBook_withValidInput_shouldReturnNewBook() throws Exception {
         mongoUserRepository.save(mongoUser2);
         bookRepository.save(book1);
-        //checkoutRepository.save(checkout1);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/books/checkout/2a/1")
                         .with(csrf())
