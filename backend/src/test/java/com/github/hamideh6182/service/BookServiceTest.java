@@ -20,8 +20,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class BookServiceTest {
@@ -323,6 +322,27 @@ class BookServiceTest {
         verify(bookRepository).findById("1");
         verify(mongoUserDetailsService).getMe(principal);
         verify(checkoutRepository).findByUserIdAndBookId("1a", "1");
+    }
+
+    @Test
+    void testCheckoutBookByUser() {
+        //When
+        when(checkoutRepository.findByUserIdAndBookId("1a", "1")).thenReturn(checkout1);
+        //GIVEN
+        boolean actual = bookService.checkoutBookByUser("1a", "1");
+        //THEN
+        verify(checkoutRepository).findByUserIdAndBookId("1a", "1");
+        assertTrue(actual);
+    }
+
+    @Test
+    void testCheckoutBookByUserInvalid() {
+        //WHEN
+        when(checkoutRepository.findByUserIdAndBookId("2a", "1")).thenReturn(null);
+        //GIVEN
+        boolean actual = bookService.checkoutBookByUser("2a", "1");
+        verify(checkoutRepository).findByUserIdAndBookId("2a", "1");
+        assertFalse(actual);
     }
 
 }
