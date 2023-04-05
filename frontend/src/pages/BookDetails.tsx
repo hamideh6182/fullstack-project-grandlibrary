@@ -4,12 +4,15 @@ import {useEffect, useState} from "react";
 import Layout from "../components/Layout";
 import useAuth from "../hooks/useAuth";
 import "./BooksGallery.css"
+import {toast} from "react-toastify";
 
 type BookDetailsProps = {
     books: Book[]
     deleteBook: (id: string) => Promise<void>
     updateBookIncrease: (id: string) => Promise<void>
     updateBookDecrease: (id: string) => Promise<void>
+    checkoutBook: (uid: string, bid: string) => Promise<void>
+    checkoutBookByUser: (uid: string, bid: string) => Promise<void>
 }
 
 export default function BookDetails(props: BookDetailsProps) {
@@ -17,6 +20,7 @@ export default function BookDetails(props: BookDetailsProps) {
     const id = params.id
     const navigate = useNavigate()
     const {isAdmin} = useAuth(false)
+    const {user} = useAuth(false)
     const [book, setBook] = useState<Book | undefined>()
     useEffect(() => {
         const filteredBook = props.books.find(book => book.id === id);
@@ -49,15 +53,45 @@ export default function BookDetails(props: BookDetailsProps) {
             .catch(console.error)
     }
 
+    function handleCheckoutBook() {
+
+        props.checkoutBook(user?.id || "undefined", id || "undefined")
+            .then(() => {
+                toast.success('📖 Wow so easy!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            })
+            .catch((error) => {
+                toast.error('📚 error!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                console.error(error)
+            })
+    }
+
     return (
         <Layout>
             <h1 className={"h1-book-gallery"}>Book <span>Details</span></h1>
-        <div className={"book-card"}>
-            <div className={"book-card-div-two"}>
-                {book.img ? <img src={book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
+            <div className={"book-card"}>
+                <div className={"book-card-div-two"}>
+                    {book.img ? <img src={book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
 
-                <div className={"book-card-div-one"}>
-                    <h5>
+                    <div className={"book-card-div-one"}>
+                        <h5>
                         {book.author}
                     </h5>
                     <h4>
@@ -76,6 +110,7 @@ export default function BookDetails(props: BookDetailsProps) {
             </div>
             <div className={"book-card-div-b"}>
                 <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
+                {user ? <button onClick={handleCheckoutBook}>Checkout</button> : null}
                 {isAdmin ?
                     <>
                         <button onClick={handleDeleteButton}>Delete</button>
