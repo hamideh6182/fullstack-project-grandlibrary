@@ -19,6 +19,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -272,5 +273,16 @@ class BookControllerTest {
                                                           "userId" : "2a"
                         }
                                                 """));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser("user2")
+    void testCheckoutBookByUser() throws Exception {
+        Boolean checkoutStatus = false;
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/ischechedout/byuser/2a/1")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(checkoutStatus.toString()));
     }
 }
