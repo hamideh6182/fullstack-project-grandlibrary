@@ -57,7 +57,7 @@ export default function BookDetails(props: BookDetailsProps) {
 
         props.checkoutBook(user?.id || "undefined", id || "undefined")
             .then(() => {
-                toast.success('📖 Wow so easy!', {
+                toast.success('📖 Book is checkout.Enjoy!', {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -69,7 +69,7 @@ export default function BookDetails(props: BookDetailsProps) {
                 });
             })
             .catch((error) => {
-                toast.error('📚 error!', {
+                toast.error('📚 Sorry.You can not loan the Book!', {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
