@@ -167,4 +167,8 @@ public class BookService {
 
         return newBook;
     }
+
+    public boolean checkoutBookByUser(String userId, String bookId) {
+        return checkoutRepository.findByUserIdAndBookId(userId, bookId) != null;
+    }
 }
