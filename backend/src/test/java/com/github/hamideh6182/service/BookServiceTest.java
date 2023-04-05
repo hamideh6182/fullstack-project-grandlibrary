@@ -3,8 +3,10 @@ package com.github.hamideh6182.service;
 import com.github.hamideh6182.exception.BookNotFoundException;
 import com.github.hamideh6182.model.Book;
 import com.github.hamideh6182.model.BookRequest;
+import com.github.hamideh6182.model.Checkout;
 import com.github.hamideh6182.model.MongoUserResponse;
 import com.github.hamideh6182.repository.BookRepository;
+import com.github.hamideh6182.repository.CheckoutRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,13 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class BookServiceTest {
@@ -26,13 +28,16 @@ class BookServiceTest {
     Book book2;
     Book book3;
     Book book4;
+    Book checkoutBook1;
     BookRequest bookRequest1;
+    Checkout checkout1;
     BookRepository bookRepository;
     BookService bookService;
     IdService idService;
     PhotoService photoService;
     MultipartFile multipartFile;
     MongoUserDetailsService mongoUserDetailsService;
+    CheckoutRepository checkoutRepository;
     Principal principal;
 
     @BeforeEach
@@ -88,13 +93,32 @@ class BookServiceTest {
                 "http:photo.com",
                 "1a"
         );
+        checkoutBook1 = new Book(
+                "1",
+                "JavaBook",
+                "Hamideh Aghdam",
+                "About Java",
+                10,
+                9,
+                "Programming",
+                "http:photo.com",
+                "1a"
+        );
+        checkout1 = new Checkout(
+                "1",
+                "1",
+                LocalDate.now().toString(),
+                LocalDate.now().plusDays(7).toString(),
+                "1a"
+        );
         bookRepository = mock(BookRepository.class);
         idService = mock(IdService.class);
         mongoUserDetailsService = mock(MongoUserDetailsService.class);
         principal = mock(Principal.class);
         photoService = mock(PhotoService.class);
         multipartFile = mock(MultipartFile.class);
-        bookService = new BookService(bookRepository, idService, photoService, mongoUserDetailsService);
+        checkoutRepository = mock(CheckoutRepository.class);
+        bookService = new BookService(bookRepository, idService, photoService, mongoUserDetailsService, checkoutRepository);
     }
 
     @Test
@@ -252,4 +276,73 @@ class BookServiceTest {
         verify(bookRepository).findById("4");
         verify(mongoUserDetailsService).getMe(principal);
     }
+
+    @Test
+    void checkoutBook_withValidInput_shouldReturnNewBook() {
+        //WHEN
+        when(idService.generateId()).thenReturn("1");
+        when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
+        when(checkoutRepository.findByUserIdAndBookId("1a", "1")).thenReturn(null);
+        when(bookRepository.save(checkoutBook1)).thenReturn(checkoutBook1);
+        when(checkoutRepository.save(checkout1)).thenReturn(checkout1);
+        //GIVEN
+        Book actual = bookService.checkoutBook("1a", "1", principal);
+        Book expected = checkoutBook1;
+        //THEN
+        verify(idService).generateId();
+        verify(bookRepository).findById("1");
+        verify(mongoUserDetailsService).getMe(principal);
+        verify(checkoutRepository).findByUserIdAndBookId("1a", "1");
+        verify(bookRepository).save(checkoutBook1);
+        verify(checkoutRepository).save(checkout1);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void checkoutBook_withInvalidBookId_shouldThrowBookNotFoundException() {
+        //WHEN
+        when(bookRepository.findById("4")).thenReturn(Optional.empty());
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
+        //THEN
+        assertThrows(BookNotFoundException.class, () -> bookService.checkoutBook("1a", "4", principal));
+        verify(bookRepository).findById("4");
+        verify(mongoUserDetailsService).getMe(principal);
+    }
+
+    @Test
+    void checkoutBook_withAlreadyCheckedOutBook_shouldThrowBookNotFoundException() {
+        Checkout existingCheckout = checkout1;
+        //WHEN
+        when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
+        when(checkoutRepository.findByUserIdAndBookId("1a", "1")).thenReturn(existingCheckout);
+        //THEN
+        assertThrows(BookNotFoundException.class, () -> bookService.checkoutBook("1a", "1", principal));
+        verify(bookRepository).findById("1");
+        verify(mongoUserDetailsService).getMe(principal);
+        verify(checkoutRepository).findByUserIdAndBookId("1a", "1");
+    }
+
+    @Test
+    void testCheckoutBookByUser() {
+        //When
+        when(checkoutRepository.findByUserIdAndBookId("1a", "1")).thenReturn(checkout1);
+        //GIVEN
+        boolean actual = bookService.checkoutBookByUser("1a", "1");
+        //THEN
+        verify(checkoutRepository).findByUserIdAndBookId("1a", "1");
+        assertTrue(actual);
+    }
+
+    @Test
+    void testCheckoutBookByUserInvalid() {
+        //WHEN
+        when(checkoutRepository.findByUserIdAndBookId("2a", "1")).thenReturn(null);
+        //GIVEN
+        boolean actual = bookService.checkoutBookByUser("2a", "1");
+        verify(checkoutRepository).findByUserIdAndBookId("2a", "1");
+        assertFalse(actual);
+    }
+
 }
