@@ -50,4 +50,9 @@ public class BookController {
     public Book checkoutBook(@PathVariable String uid, @PathVariable String bid, Principal principal) {
         return bookService.checkoutBook(uid, bid, principal);
     }
+
+    @GetMapping("/ischechedout/byuser/{uid}/{bid}")
+    public Boolean checkoutBookByUser(@PathVariable String uid, @PathVariable String bid) {
+        return bookService.checkoutBookByUser(uid, bid);
+    }
 }
