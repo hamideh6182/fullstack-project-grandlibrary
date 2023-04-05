@@ -10,6 +10,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 axios.interceptors.request.use(function (config) {
     return fetch("/api/csrf").then(() => {
@@ -21,7 +23,15 @@ axios.interceptors.request.use(function (config) {
 });
 
 function App() {
-    const {books, postNewBook, deleteBook, updateBookIncrease, updateBookDecrease, checkoutBook} = useBooks()
+    const {
+        books,
+        postNewBook,
+        deleteBook,
+        updateBookIncrease,
+        updateBookDecrease,
+        checkoutBook,
+        checkoutBookByUser
+    } = useBooks()
     return (
         <div className="App">
             <Routes>
@@ -33,9 +43,24 @@ function App() {
                 <Route path={"/books/:id"} element={<BookDetails books={books} deleteBook={deleteBook}
                                                                  updateBookIncrease={updateBookIncrease}
                                                                  updateBookDecrease={updateBookDecrease}
-                                                                 checkoutBook={checkoutBook}/>}/>
+                                                                 checkoutBook={checkoutBook}
+                                                                 checkoutBookByUser={checkoutBookByUser}/>}/>
             </Routes>
-      </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
+            {/* Same as */}
+            <ToastContainer/>
+        </div>
   );
 }
 
