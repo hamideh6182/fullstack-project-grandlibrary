@@ -345,4 +345,22 @@ class BookServiceTest {
         assertFalse(actual);
     }
 
+    @Test
+    void testReturnBook_ThenReturnBook() {
+        //WHEN
+        when(bookRepository.findById("1")).thenReturn(Optional.of(checkoutBook1));
+        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
+        when(checkoutRepository.findByUserIdAndBookId("1a", "1")).thenReturn(checkout1);
+        when(bookRepository.save(book1)).thenReturn(book1);
+        //GIVEN
+        Book actual = bookService.returnBook("1a", "1", principal);
+        Book expected = book1;
+        //THEN
+        verify(bookRepository).findById("1");
+        verify(mongoUserDetailsService).getMe(principal);
+        verify(checkoutRepository).findByUserIdAndBookId("1a", "1");
+        verify(bookRepository).save(book1);
+        Assertions.assertEquals(expected, actual);
+    }
+
 }
