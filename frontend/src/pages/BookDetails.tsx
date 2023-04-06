@@ -54,63 +54,37 @@ export default function BookDetails(props: BookDetailsProps) {
             .catch(console.error)
     }
 
-    function handleCheckoutBook() {
+    function createToastNotification(success: any, message: any) {
+        toast[success ? "success" : "error"](message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
 
+    function handleCheckoutBook() {
         props.checkoutBook(user?.id || "undefined", id || "undefined")
             .then(() => {
-                toast.success('📖 Book is checkout.Enjoy!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                createToastNotification(true, '📖 Book is checkout.Enjoy!');
             })
             .catch((error) => {
-                toast.error('📚 Sorry.You can not loan the Book!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                createToastNotification(false, '📚 Sorry.You can not loan the Book!');
                 console.error(error)
             })
     }
 
-
     function handleReturnBook() {
-
         props.returnBook(user?.id || "undefined", id || "undefined")
             .then(() => {
-                toast.success('📕 The book has been returned.Thank you', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                createToastNotification(true, '📕 The book has been returned.Thank you');
             })
             .catch((error) => {
-                toast.error('📚 Book does not exist or not checked out by user!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                createToastNotification(false, '📚 Book does not exist or not checked out by user!');
                 console.error(error)
             })
     }
