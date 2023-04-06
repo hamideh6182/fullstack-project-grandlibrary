@@ -195,7 +195,7 @@ public class BookService {
         );
 
         bookRepository.save(newBook);
-        checkoutRepository.deleteById(bookId);
+        checkoutRepository.deleteById(validateCheckout.id());
         return newBook;
     }
 }
