@@ -44,6 +44,7 @@ class BookControllerTest {
     Cloudinary cloudinary;
     Uploader uploader = mock(Uploader.class);
     Book book1;
+    Book returnBook1;
 
     Book checkoutBook1;
     Checkout checkout1;
@@ -83,6 +84,18 @@ class BookControllerTest {
                 checkoutBook1.id(),
                 LocalDate.now().toString(),
                 LocalDate.now().plusDays(14).toString(),
+                "2a"
+        );
+
+        returnBook1 = new Book(
+                "1",
+                "JavaBook",
+                "Hamideh Aghdam",
+                "About Java",
+                10,
+                9,
+                "Programming",
+                "http://imgage.com/img1.png",
                 "2a"
         );
     }
@@ -284,5 +297,32 @@ class BookControllerTest {
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(checkoutStatus.toString()));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser("user2")
+    void returnBook_withValidInput_shouldReturnNewBook() throws Exception {
+        mongoUserRepository.save(mongoUser2);
+        bookRepository.save(returnBook1);
+        checkoutRepository.save(checkout1);
+
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/return/2a/1")
+                        .with(csrf())
+                ).andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                                                          "id" : "1",
+                                                          "title" : "JavaBook",
+                                                          "author" : "Hamideh Aghdam",
+                                                          "description" : "About Java",
+                                                          "copies" : 10,
+                                                          "copiesAvailable" : 10,
+                                                          "category" : "Programming",
+                                                          "img" : "http://imgage.com/img1.png",
+                                                          "userId" : "2a"
+                        }
+                                                """));
     }
 }

@@ -130,7 +130,7 @@ public class BookService {
     }
 
     public Book checkoutBook(String userId, String bookId, Principal principal) {
-        String adminId = mongoUserDetailsService.getMe(principal).id();
+        String userOrAdminId = mongoUserDetailsService.getMe(principal).id();
         Optional<Book> book = bookRepository.findById(bookId);
 
         Checkout validateCheckout = checkoutRepository.findByUserIdAndBookId(userId, bookId);
@@ -149,7 +149,7 @@ public class BookService {
                 newCopiesAvailable,
                 book.get().category(),
                 book.get().img(),
-                adminId
+                userOrAdminId
         );
 
         bookRepository.save(newBook);
@@ -170,5 +170,32 @@ public class BookService {
 
     public boolean checkoutBookByUser(String userId, String bookId) {
         return checkoutRepository.findByUserIdAndBookId(userId, bookId) != null;
+    }
+
+    public Book returnBook(String userId, String bookId, Principal principal) {
+        Optional<Book> book = bookRepository.findById(bookId);
+        String userOrAdminId = mongoUserDetailsService.getMe(principal).id();
+        Checkout validateCheckout = checkoutRepository.findByUserIdAndBookId(userId, bookId);
+
+        if (book.isEmpty() || validateCheckout == null) {
+            throw new BookNotFoundException("Book does not exist or not checked out by user");
+        }
+
+        int newCopiesAvailable = book.get().copiesAvailable() + 1;
+        Book newBook = new Book(
+                bookId,
+                book.get().title(),
+                book.get().author(),
+                book.get().description(),
+                book.get().copies(),
+                newCopiesAvailable,
+                book.get().category(),
+                book.get().img(),
+                userOrAdminId
+        );
+
+        bookRepository.save(newBook);
+        checkoutRepository.deleteById(validateCheckout.id());
+        return newBook;
     }
 }

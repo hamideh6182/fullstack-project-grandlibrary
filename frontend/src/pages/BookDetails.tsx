@@ -13,6 +13,7 @@ type BookDetailsProps = {
     updateBookDecrease: (id: string) => Promise<void>
     checkoutBook: (uid: string, bid: string) => Promise<void>
     checkoutBookByUser: (uid: string, bid: string) => Promise<void>
+    returnBook: (uid: string, bid: string) => Promise<void>
 }
 
 export default function BookDetails(props: BookDetailsProps) {
@@ -53,32 +54,37 @@ export default function BookDetails(props: BookDetailsProps) {
             .catch(console.error)
     }
 
-    function handleCheckoutBook() {
+    function createToastNotification(success: any, message: any) {
+        toast[success ? "success" : "error"](message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
 
+    function handleCheckoutBook() {
         props.checkoutBook(user?.id || "undefined", id || "undefined")
             .then(() => {
-                toast.success('📖 Book is checkout.Enjoy!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                createToastNotification(true, '📖 Book is checkout.Enjoy!');
             })
             .catch((error) => {
-                toast.error('📚 Sorry.You can not loan the Book!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                createToastNotification(false, '📚 Sorry.You can not loan the Book!');
+                console.error(error)
+            })
+    }
+
+    function handleReturnBook() {
+        props.returnBook(user?.id || "undefined", id || "undefined")
+            .then(() => {
+                createToastNotification(true, '📕 The book has been returned.Thank you');
+            })
+            .catch((error) => {
+                createToastNotification(false, '📚 Book does not exist or not checked out by user!');
                 console.error(error)
             })
     }
@@ -111,6 +117,7 @@ export default function BookDetails(props: BookDetailsProps) {
             <div className={"book-card-div-b"}>
                 <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
                 {user ? <button onClick={handleCheckoutBook}>Checkout</button> : null}
+                {user ? <button onClick={handleReturnBook}>Return Book</button> : null}
                 {isAdmin ?
                     <>
                         <button onClick={handleDeleteButton}>Delete</button>
