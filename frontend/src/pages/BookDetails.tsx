@@ -13,6 +13,7 @@ type BookDetailsProps = {
     updateBookDecrease: (id: string) => Promise<void>
     checkoutBook: (uid: string, bid: string) => Promise<void>
     checkoutBookByUser: (uid: string, bid: string) => Promise<void>
+    returnBook: (uid: string, bid: string) => Promise<void>
 }
 
 export default function BookDetails(props: BookDetailsProps) {
@@ -83,6 +84,37 @@ export default function BookDetails(props: BookDetailsProps) {
             })
     }
 
+
+    function handleReturnBook() {
+
+        props.returnBook(user?.id || "undefined", id || "undefined")
+            .then(() => {
+                toast.success('📕 The book has been returned.Thank you', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            })
+            .catch((error) => {
+                toast.error('📚 Book does not exist or not checked out by user!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                console.error(error)
+            })
+    }
+
     return (
         <Layout>
             <h1 className={"h1-book-gallery"}>Book <span>Details</span></h1>
@@ -111,6 +143,7 @@ export default function BookDetails(props: BookDetailsProps) {
             <div className={"book-card-div-b"}>
                 <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
                 {user ? <button onClick={handleCheckoutBook}>Checkout</button> : null}
+                {user ? <button onClick={handleReturnBook}>Return Book</button> : null}
                 {isAdmin ?
                     <>
                         <button onClick={handleDeleteButton}>Delete</button>
