@@ -37,6 +37,9 @@ public class BookService {
     }
 
     public Book addBook(BookRequest bookRequest, MultipartFile photo, Principal principal) {
+        if (mongoUserDetailsService.getMe(principal) == null) {
+            throw new UnauthorizedException("Admin not found or only admin can add the book");
+        }
         if (bookRequest.title() == null) {
             throw new IllegalArgumentException("missing title");
         }
@@ -51,7 +54,6 @@ public class BookService {
             photoUri = null;
         }
         String id = idService.generateId();
-        String adminId = mongoUserDetailsService.getMe(principal).id();
         Book newBook = new Book(
                 id,
                 bookRequest.title(),
@@ -60,33 +62,30 @@ public class BookService {
                 bookRequest.copies(),
                 bookRequest.copies(),
                 bookRequest.category(),
-                photoUri,
-                adminId
+                photoUri
         );
         return bookRepository.save(newBook);
     }
 
     public Book deleteBook(String id, Principal principal) {
-        String adminId = mongoUserDetailsService.getMe(principal).id();
+        if (mongoUserDetailsService.getMe(principal) == null) {
+            throw new UnauthorizedException("Admin not found or only admin can delete the book");
+        }
         Optional<Book> book = bookRepository.findById(id);
         if (book.isEmpty()) {
             throw new BookNotFoundException("Book not found");
-        }
-        if (!book.get().userId().equals(adminId)) {
-            throw new UnauthorizedException("Administration page");
         }
         bookRepository.delete(book.get());
         return book.get();
     }
 
     public Book increaseBookQuantity(String id, Principal principal) {
-        String adminId = mongoUserDetailsService.getMe(principal).id();
+        if (mongoUserDetailsService.getMe(principal) == null) {
+            throw new UnauthorizedException("Amin not found or only admin can increase the quantity");
+        }
         Optional<Book> book = bookRepository.findById(id);
         if (book.isEmpty()) {
             throw new BookNotFoundException("Book not found");
-        }
-        if (!book.get().userId().equals(adminId)) {
-            throw new UnauthorizedException("Administration page only");
         }
         int newCopies = book.get().copies() + 1;
         int newCopiesAvailable = book.get().copiesAvailable() + 1;
@@ -98,20 +97,18 @@ public class BookService {
                 newCopies,
                 newCopiesAvailable,
                 book.get().category(),
-                book.get().img(),
-                adminId
+                book.get().img()
         );
         return bookRepository.save(newBook);
     }
 
     public Book decreaseBookQuantity(String id, Principal principal) {
-        String adminId = mongoUserDetailsService.getMe(principal).id();
+        if (mongoUserDetailsService.getMe(principal) == null) {
+            throw new UnauthorizedException("Admin not found or only admin can decrease the quantity");
+        }
         Optional<Book> book = bookRepository.findById(id);
         if (book.isEmpty() || book.get().copies() <= 0 || book.get().copiesAvailable() <= 0) {
             throw new BookNotFoundException("Book not found or quantity locked");
-        }
-        if (!book.get().userId().equals(adminId)) {
-            throw new UnauthorizedException("Only Administration");
         }
         int newCopies = book.get().copies() - 1;
         int newCopiesAvailable = book.get().copiesAvailable() - 1;
@@ -123,14 +120,15 @@ public class BookService {
                 newCopies,
                 newCopiesAvailable,
                 book.get().category(),
-                book.get().img(),
-                adminId
+                book.get().img()
         );
         return bookRepository.save(newBook);
     }
 
     public Book checkoutBook(String userId, String bookId, Principal principal) {
-        String userOrAdminId = mongoUserDetailsService.getMe(principal).id();
+        if (mongoUserDetailsService.getMe(principal) == null) {
+            throw new UnauthorizedException("User not found");
+        }
         Optional<Book> book = bookRepository.findById(bookId);
 
         Checkout validateCheckout = checkoutRepository.findByUserIdAndBookId(userId, bookId);
@@ -148,8 +146,7 @@ public class BookService {
                 book.get().copies(),
                 newCopiesAvailable,
                 book.get().category(),
-                book.get().img(),
-                userOrAdminId
+                book.get().img()
         );
 
         bookRepository.save(newBook);
@@ -173,8 +170,10 @@ public class BookService {
     }
 
     public Book returnBook(String userId, String bookId, Principal principal) {
+        if (mongoUserDetailsService.getMe(principal) == null) {
+            throw new UnauthorizedException("User not found, or only user or admin can return the book");
+        }
         Optional<Book> book = bookRepository.findById(bookId);
-        String userOrAdminId = mongoUserDetailsService.getMe(principal).id();
         Checkout validateCheckout = checkoutRepository.findByUserIdAndBookId(userId, bookId);
 
         if (book.isEmpty() || validateCheckout == null) {
@@ -190,8 +189,7 @@ public class BookService {
                 book.get().copies(),
                 newCopiesAvailable,
                 book.get().category(),
-                book.get().img(),
-                userOrAdminId
+                book.get().img()
         );
 
         bookRepository.save(newBook);
