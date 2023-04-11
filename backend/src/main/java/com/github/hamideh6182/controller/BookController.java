@@ -47,17 +47,17 @@ public class BookController {
     }
 
     @PutMapping("/checkout/{uid}/{bid}")
-    public Book checkoutBook(@PathVariable String uid, @PathVariable String bid, Principal principal) {
-        return bookService.checkoutBook(uid, bid, principal);
+    public Book checkoutBook(@PathVariable String uid, @PathVariable String bid) {
+        return bookService.checkoutBook(uid, bid);
     }
 
-    @GetMapping("/ischechedout/byuser/{uid}/{bid}")
+    @GetMapping("/ischeckout/byuser/{uid}/{bid}")
     public Boolean checkoutBookByUser(@PathVariable String uid, @PathVariable String bid) {
         return bookService.checkoutBookByUser(uid, bid);
     }
 
     @PutMapping("/return/{uid}/{bid}")
-    public Book returnBook(@PathVariable String uid, @PathVariable String bid, Principal principal) {
-        return bookService.returnBook(uid, bid, principal);
+    public Book returnBook(@PathVariable String uid, @PathVariable String bid) {
+        return bookService.returnBook(uid, bid);
     }
 }
