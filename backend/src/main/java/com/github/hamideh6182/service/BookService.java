@@ -129,8 +129,7 @@ public class BookService {
         return bookRepository.save(newBook);
     }
 
-    public Book checkoutBook(String userId, String bookId, Principal principal) {
-        String userOrAdminId = mongoUserDetailsService.getMe(principal).id();
+    public Book checkoutBook(String userId, String bookId) {
         Optional<Book> book = bookRepository.findById(bookId);
 
         Checkout validateCheckout = checkoutRepository.findByUserIdAndBookId(userId, bookId);
@@ -149,7 +148,7 @@ public class BookService {
                 newCopiesAvailable,
                 book.get().category(),
                 book.get().img(),
-                userOrAdminId
+                book.get().userId()
         );
 
         bookRepository.save(newBook);
@@ -172,9 +171,8 @@ public class BookService {
         return checkoutRepository.findByUserIdAndBookId(userId, bookId) != null;
     }
 
-    public Book returnBook(String userId, String bookId, Principal principal) {
+    public Book returnBook(String userId, String bookId) {
         Optional<Book> book = bookRepository.findById(bookId);
-        String userOrAdminId = mongoUserDetailsService.getMe(principal).id();
         Checkout validateCheckout = checkoutRepository.findByUserIdAndBookId(userId, bookId);
 
         if (book.isEmpty() || validateCheckout == null) {
@@ -191,7 +189,7 @@ public class BookService {
                 newCopiesAvailable,
                 book.get().category(),
                 book.get().img(),
-                userOrAdminId
+                book.get().userId()
         );
 
         bookRepository.save(newBook);

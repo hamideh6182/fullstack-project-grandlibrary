@@ -283,7 +283,7 @@ class BookControllerTest {
                                                           "copiesAvailable" : 9,
                                                           "category" : "Programming",
                                                           "img" : "http://imgage.com/img1.png",
-                                                          "userId" : "2a"
+                                                          "userId" : "1a"
                         }
                                                 """));
     }
@@ -293,7 +293,7 @@ class BookControllerTest {
     @WithMockUser("user2")
     void testCheckoutBookByUser() throws Exception {
         Boolean checkoutStatus = false;
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/ischechedout/byuser/2a/1")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/books/ischeckout/byuser/2a/1")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(checkoutStatus.toString()));

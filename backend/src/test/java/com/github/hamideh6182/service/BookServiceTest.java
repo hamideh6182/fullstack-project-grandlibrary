@@ -282,17 +282,15 @@ class BookServiceTest {
         //WHEN
         when(idService.generateId()).thenReturn("1");
         when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
-        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
         when(checkoutRepository.findByUserIdAndBookId("1a", "1")).thenReturn(null);
         when(bookRepository.save(checkoutBook1)).thenReturn(checkoutBook1);
         when(checkoutRepository.save(checkout1)).thenReturn(checkout1);
         //GIVEN
-        Book actual = bookService.checkoutBook("1a", "1", principal);
+        Book actual = bookService.checkoutBook("1a", "1");
         Book expected = checkoutBook1;
         //THEN
         verify(idService).generateId();
         verify(bookRepository).findById("1");
-        verify(mongoUserDetailsService).getMe(principal);
         verify(checkoutRepository).findByUserIdAndBookId("1a", "1");
         verify(bookRepository).save(checkoutBook1);
         verify(checkoutRepository).save(checkout1);
@@ -303,11 +301,9 @@ class BookServiceTest {
     void checkoutBook_withInvalidBookId_shouldThrowBookNotFoundException() {
         //WHEN
         when(bookRepository.findById("4")).thenReturn(Optional.empty());
-        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
         //THEN
-        assertThrows(BookNotFoundException.class, () -> bookService.checkoutBook("1a", "4", principal));
+        assertThrows(BookNotFoundException.class, () -> bookService.checkoutBook("1a", "4"));
         verify(bookRepository).findById("4");
-        verify(mongoUserDetailsService).getMe(principal);
     }
 
     @Test
@@ -315,12 +311,10 @@ class BookServiceTest {
         Checkout existingCheckout = checkout1;
         //WHEN
         when(bookRepository.findById("1")).thenReturn(Optional.of(book1));
-        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
         when(checkoutRepository.findByUserIdAndBookId("1a", "1")).thenReturn(existingCheckout);
         //THEN
-        assertThrows(BookNotFoundException.class, () -> bookService.checkoutBook("1a", "1", principal));
+        assertThrows(BookNotFoundException.class, () -> bookService.checkoutBook("1a", "1"));
         verify(bookRepository).findById("1");
-        verify(mongoUserDetailsService).getMe(principal);
         verify(checkoutRepository).findByUserIdAndBookId("1a", "1");
     }
 
@@ -349,15 +343,13 @@ class BookServiceTest {
     void testReturnBook_ThenReturnBook() {
         //WHEN
         when(bookRepository.findById("1")).thenReturn(Optional.of(checkoutBook1));
-        when(mongoUserDetailsService.getMe(principal)).thenReturn(new MongoUserResponse("1a", "", ""));
         when(checkoutRepository.findByUserIdAndBookId("1a", "1")).thenReturn(checkout1);
         when(bookRepository.save(book1)).thenReturn(book1);
         //GIVEN
-        Book actual = bookService.returnBook("1a", "1", principal);
+        Book actual = bookService.returnBook("1a", "1");
         Book expected = book1;
         //THEN
         verify(bookRepository).findById("1");
-        verify(mongoUserDetailsService).getMe(principal);
         verify(checkoutRepository).findByUserIdAndBookId("1a", "1");
         verify(bookRepository).save(book1);
         Assertions.assertEquals(expected, actual);
