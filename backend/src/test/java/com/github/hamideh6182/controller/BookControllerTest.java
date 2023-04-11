@@ -283,7 +283,7 @@ class BookControllerTest {
                                                           "copiesAvailable" : 9,
                                                           "category" : "Programming",
                                                           "img" : "http://imgage.com/img1.png",
-                                                          "userId" : "2a"
+                                                          "userId" : "1a"
                         }
                                                 """));
     }
