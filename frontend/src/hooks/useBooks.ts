@@ -66,7 +66,7 @@ export default function useBooks() {
     }
 
     function checkoutBookByUser(uid: string, bid: string) {
-        return axios.put("/api/books/ischechedout/byuser/" + uid + "/" + bid)
+        return axios.put("/api/books/ischeckout/byuser/" + uid + "/" + bid)
             .then(() => loadAllBooks())
     }
 
