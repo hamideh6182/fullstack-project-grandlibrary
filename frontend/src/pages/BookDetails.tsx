@@ -5,6 +5,9 @@ import Layout from "../components/Layout";
 import useAuth from "../hooks/useAuth";
 import "./BooksGallery.css"
 import {toast} from "react-toastify";
+import {confirmAlert} from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 
 type BookDetailsProps = {
     books: Book[]
@@ -23,6 +26,7 @@ export default function BookDetails(props: BookDetailsProps) {
     const {isAdmin} = useAuth(false)
     const {user} = useAuth(false)
     const [book, setBook] = useState<Book | undefined>()
+
     useEffect(() => {
         const filteredBook = props.books.find(book => book.id === id);
         if (filteredBook)
@@ -39,9 +43,28 @@ export default function BookDetails(props: BookDetailsProps) {
     }
 
     function handleDeleteButton() {
-        props.deleteBook(id || "undefined")
-            .then(() => navigate("/Books"))
-            .catch(console.error)
+        confirmAlert({
+            title: 'Confirm Delete',
+            message: 'Are you sure you want to delete this book?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        props.deleteBook(id || "undefined")
+                            .then(() => {
+                                navigate("/Books");
+                                createToastNotification(true, "📕 Book deleted successfully!");
+                            })
+                            .catch(console.error)
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => {
+                    }
+                }
+            ]
+        });
     }
 
     function handleIncreaseBookQuantity() {
