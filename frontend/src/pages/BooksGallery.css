@@ -20,18 +20,30 @@
     padding: 15px;
 }
 
+.search-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.search-div:first-of-type {
+    white-space: initial;
+}
+
 .book-gallery-input {
     margin: 10px 25px;
-    padding: 13px;
-    width: 370px;
+    padding: 10px;
+    width: 362px;
     border: 2px solid #56c883;
     border-radius: 5px;
 }
 
 .book-gallery-select {
     margin: 10px 25px;
-    padding: 10px;
-    width: 370px;
+    padding: 7px;
+    width: 362px;
     border: 2px solid #56c883;
 }
 
