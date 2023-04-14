@@ -119,24 +119,21 @@ export default function BookDetails(props: BookDetailsProps) {
                 <div className={"book-card-details"}>
                     {book.img ? <img src={book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
                     <div>
-                        <h6>
+                        <h5>
                             {book.author}
-                        </h6>
+                        </h5>
                         <h4>
                             {book.title}
                         </h4>
                         <p>
-                            {book.description}
+                            Description : {book.description}
                         </p>
-                        <text>
+                        <p>
                             Copies : {book.copies}
-                        </text>
-                        <br/>
-                        <text>
+                        </p>
+                        <p>
                             Copies Available : {book.copiesAvailable}
-                        </text>
-                        <br/>
-                        <br/>
+                        </p>
                     </div>
                     <div>
                         <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
