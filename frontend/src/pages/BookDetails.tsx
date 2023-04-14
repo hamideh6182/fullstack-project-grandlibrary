@@ -116,43 +116,44 @@ export default function BookDetails(props: BookDetailsProps) {
         <Layout>
             <h1 className={"h1-book-gallery"}>Book <span>Details</span></h1>
             <div className={"book-card"}>
-                <div className={"book-card-div-two"}>
+                <div className={"book-card-details"}>
                     {book.img ? <img src={book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
-
-                    <div className={"book-card-div-one"}>
-                        <h5>
-                        {book.author}
-                    </h5>
-                    <h4>
-                        {book.title}
-                    </h4>
-                    <p>
-                        {book.description}
-                    </p>
-                    <text>
-                        Copies : {book.copies}
-                    </text>
-                    <text>
-                        Copies Available : {book.copiesAvailable}
-                    </text>
+                    <div>
+                        <h6>
+                            {book.author}
+                        </h6>
+                        <h4>
+                            {book.title}
+                        </h4>
+                        <p>
+                            {book.description}
+                        </p>
+                        <text>
+                            Copies : {book.copies}
+                        </text>
+                        <br/>
+                        <text>
+                            Copies Available : {book.copiesAvailable}
+                        </text>
+                        <br/>
+                        <br/>
+                    </div>
+                    <div>
+                        <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
+                        {user ? <button onClick={handleCheckoutBook}>Checkout</button> : null}
+                        {user ? <button onClick={handleReturnBook}>Return Book</button> : null}
+                        {isAdmin ?
+                            <>
+                                <button onClick={handleDeleteButton}>Delete</button>
+                                <button onClick={handleIncreaseBookQuantity}>Increase Quantity</button>
+                                <button onClick={handleDecreaseBookQuantity}>Decrease Quantity</button>
+                            </>
+                            :
+                            null
+                        }
+                    </div>
                 </div>
-            </div>
-            <div className={"book-card-div-b"}>
-                <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
-                {user ? <button onClick={handleCheckoutBook}>Checkout</button> : null}
-                {user ? <button onClick={handleReturnBook}>Return Book</button> : null}
-                {isAdmin ?
-                    <>
-                        <button onClick={handleDeleteButton}>Delete</button>
-                        <button onClick={handleIncreaseBookQuantity}>Increase Quantity</button>
-                        <button onClick={handleDecreaseBookQuantity}>Decrease Quantity</button>
-                    </>
-                    :
-                    null
-                }
-            </div>
         </div>
         </Layout>
     )
 }
-
