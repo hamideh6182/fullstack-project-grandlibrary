@@ -29,12 +29,15 @@
     align-items: center;
 }
 
-.book-card-details h4 {
+.book-card-details h4, h5 {
     margin-bottom: 10px;
+    font-family: Arial, Tahoma, serif;
+    text-align: center;
 }
 
 .book-card-details p {
     margin-bottom: 10px;
+    font-family: Arial, Tahoma, serif;
 }
 
 .book-card-details button {
@@ -60,9 +63,5 @@
 
 .book-card p {
     text-align: justify;
-}
-
-.book-card-details-text {
-    text-align: center;
-    margin-bottom: 10px;
+    font-family: Arial, Tahoma, serif;
 }
