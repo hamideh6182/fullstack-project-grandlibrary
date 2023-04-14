@@ -1,0 +1,8 @@
+.footer {
+    position: relative;
+    bottom: 0;
+    height: 4vh;
+    text-align: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
