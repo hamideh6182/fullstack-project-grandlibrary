@@ -1,18 +1,14 @@
-.add-book-bg {
-    height: 100vh;
-}
-
 .add-book {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
+    display: grid;
+    justify-content: center;
+    max-width: 800px;
     padding: 15px;
-    margin: 15px;
+    margin: 10px auto;
     font-family: Arial, sans-serif;
     font-size: 17px;
     background-color: white;
     border-radius: 5px;
-    box-shadow: 20px 20px 40px -6px rgb(0, 0, 0, 0.5)
+    box-shadow: 20px 20px 40px -6px rgb(0, 0, 0, 0.5);
 }
 
 .h1-add-book {
@@ -28,16 +24,27 @@
 .add-book input, textarea, select {
     width: 100%;
     padding: 10px;
-    font-size: 16px;
-    margin-bottom: 30px;
+    font-size: 15px;
+    margin-bottom: 25px;
     border: 1px solid #56c883;
     border-radius: 5px;
     outline: none;
     background: transparent;
+    font-family: Arial, Tahoma, serif;
 }
 
-.add-book button {
-    width: 350px;
+::placeholder {
+    opacity: 1;
+    transition: opacity 1s;
+}
+
+:focus::placeholder {
+    opacity: 0
+}
+
+.add-book-button {
+    width: 385px;
+    margin: 0 auto;
     background-color: #56c883;
     color: white;
     padding: 14px 20px;
@@ -45,4 +52,10 @@
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
+}
+
+.add-book label {
+    color: #ff7800;
+    font-size: 15px;
+    font-family: Arial, Tahoma, serif;
 }
