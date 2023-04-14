@@ -1,47 +1,50 @@
-.book-card {
+.book-card-container {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-direction: column;
-    white-space: nowrap;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+}
+
+.book-card {
+    max-width: 800px;
+    width: 360px;
+    margin: 5px auto;
     padding: 10px;
-    margin: 15px;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 20px 20px 20px -6px rgb(0, 0, 0, 0.2)
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
 }
 
 .book-card img {
-    width: 200px;
-    height: 300px;
-    margin: 5px;
-    border-radius: 5px;
+    width: 100%;
+    max-width: 150px;
+    max-height: 250px;
+    height: auto;
+    margin: 10px;
+    border-radius: 10px;
 }
 
-.book-card-div-one {
+.book-card-details {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
     flex-direction: column;
-}
-
-.book-card-div-two {
-    display: flex;
+    margin: 10px;
     justify-content: center;
     align-items: center;
+}
+
+.book-card-details h4 {
+    margin-bottom: 10px;
+}
+
+.book-card-details p {
+    margin-bottom: 10px;
+}
+
+.book-card-details button {
+    display: inline-block;
+    width: 150px;
+    margin: 5px;
     flex-direction: row;
-}
-
-.book-card-div-b {
-    display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-}
-
-.book-card button {
-    width: 200px;
-    margin: 5px;
+    white-space: nowrap;
     cursor: pointer;
     background-color: #56c883;
     color: white;
@@ -52,5 +55,14 @@
 }
 
 .book-card button:hover {
-    background: rgb(246,130,8);
+    background: rgb(246, 130, 8);
+}
+
+.book-card p {
+    text-align: justify;
+}
+
+.book-card-details-text {
+    text-align: center;
+    margin-bottom: 10px;
 }
