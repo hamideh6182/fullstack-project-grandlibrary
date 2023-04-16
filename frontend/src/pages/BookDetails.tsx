@@ -80,7 +80,7 @@ export default function BookDetails(props: BookDetailsProps) {
     function createToastNotification(success: any, message: any) {
         toast[success ? "success" : "error"](message, {
             position: "top-right",
-            autoClose: 5000,
+            autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -126,13 +126,13 @@ export default function BookDetails(props: BookDetailsProps) {
                             {book.title}
                         </h4>
                         <p>
-                            Description : {book.description}
+                            <span className={"add-book-p-span"}>Description</span> : {book.description}
                         </p>
                         <p>
-                            Copies : {book.copies}
+                            <span className={"add-book-p-span"}>Copies</span> : {book.copies}
                         </p>
                         <p>
-                            Copies Available : {book.copiesAvailable}
+                            <span className={"add-book-p-span"}>Copies Available</span> : {book.copiesAvailable}
                         </p>
                     </div>
                     <div>
