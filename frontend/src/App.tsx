@@ -12,6 +12,7 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from "./components/Footer";
 
 axios.interceptors.request.use(function (config) {
     return fetch("/api/csrf").then(() => {
@@ -61,6 +62,7 @@ function App() {
                 theme="light"
             />
             <ToastContainer/>
+            <Footer/>
         </div>
   );
 }
