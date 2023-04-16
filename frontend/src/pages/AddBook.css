@@ -8,7 +8,7 @@
     font-size: 17px;
     background-color: white;
     border-radius: 5px;
-    box-shadow: 20px 20px 40px -6px rgb(0, 0, 0, 0.5);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
 }
 
 .h1-add-book {
@@ -58,4 +58,9 @@
     color: #ff7800;
     font-size: 15px;
     font-family: Arial, Tahoma, serif;
+}
+
+.add-book-p-span {
+    color: #ff7800;
+
 }
