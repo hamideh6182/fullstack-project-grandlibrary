@@ -62,20 +62,20 @@ export default function AddBook(props: AddBookProps) {
 
     return !isAdmin ? null : (
         <Layout>
-            <div className={"add-book-bg"}>
-                <h1 className={"h1-add-book"}>
-                    Add a <span>new book</span>
-                </h1>
-                <div className={"add-book"}>
-                    <form onSubmit={formSubmitHandler}>
-                        <div>
-                            <label>Title</label><br/>
-                            <input type={"text"} name={"title"} value={title} required={true}
-                                   onChange={handleTitleChange}/>
+            <h1 className={"h1-add-book"}>
+                Add a <span>new book</span>
+            </h1>
+            <div>
+                <form className={"add-book"} onSubmit={formSubmitHandler}>
+                    <div>
+                        <label>Title</label><br/>
+                        <input type={"text"} name={"title"} value={title} required={true} placeholder={"Enter title"}
+                               onChange={handleTitleChange}/>
                     </div>
                     <div>
                         <label>Author</label><br/>
                         <input type={"text"} name={"author"} value={author} required={true}
+                               placeholder={"Name of the author"}
                                onChange={handleAuthorChange}/>
                     </div>
                     <div>
@@ -90,22 +90,22 @@ export default function AddBook(props: AddBookProps) {
                     </div>
                     <div>
                         <label>Description</label><br/>
-                        <textarea value={description} onChange={handleDescriptionChange}/>
+                        <textarea value={description} placeholder={"Describe what the book is about"}
+                                  onChange={handleDescriptionChange}/>
                     </div>
                     <div>
                         <label>Copies</label><br/>
                         <input type={"number"} value={copies} onChange={handleCopiesChange}/>
                     </div>
                     <div>
-                    <label>
-                        Upload image:<br/>
-                        <input type={"file"} onChange={handleFileChange} accept={"image/jpeg, image/png"}/>
-                    </label>
+                        <label>
+                            Upload image:<br/>
+                            <input type={"file"} onChange={handleFileChange} accept={"image/jpeg, image/png"}/>
+                        </label>
                     </div>
-                        <button type={"submit"}>Add Book</button>
+                    <button className={"add-book-button"} type={"submit"}>Add Book</button>
                 </form>
             </div>
-        </div>
         </Layout>
     )
 }

@@ -5,6 +5,9 @@ import Layout from "../components/Layout";
 import useAuth from "../hooks/useAuth";
 import "./BooksGallery.css"
 import {toast} from "react-toastify";
+import {confirmAlert} from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 
 type BookDetailsProps = {
     books: Book[]
@@ -23,6 +26,7 @@ export default function BookDetails(props: BookDetailsProps) {
     const {isAdmin} = useAuth(false)
     const {user} = useAuth(false)
     const [book, setBook] = useState<Book | undefined>()
+
     useEffect(() => {
         const filteredBook = props.books.find(book => book.id === id);
         if (filteredBook)
@@ -39,9 +43,28 @@ export default function BookDetails(props: BookDetailsProps) {
     }
 
     function handleDeleteButton() {
-        props.deleteBook(id || "undefined")
-            .then(() => navigate("/Books"))
-            .catch(console.error)
+        confirmAlert({
+            title: 'Confirm Delete',
+            message: 'Are you sure you want to delete this book?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        props.deleteBook(id || "undefined")
+                            .then(() => {
+                                navigate("/Books");
+                                createToastNotification(true, "📕 Book deleted successfully!");
+                            })
+                            .catch(console.error)
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => {
+                    }
+                }
+            ]
+        });
     }
 
     function handleIncreaseBookQuantity() {
@@ -57,7 +80,7 @@ export default function BookDetails(props: BookDetailsProps) {
     function createToastNotification(success: any, message: any) {
         toast[success ? "success" : "error"](message, {
             position: "top-right",
-            autoClose: 5000,
+            autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -93,43 +116,41 @@ export default function BookDetails(props: BookDetailsProps) {
         <Layout>
             <h1 className={"h1-book-gallery"}>Book <span>Details</span></h1>
             <div className={"book-card"}>
-                <div className={"book-card-div-two"}>
+                <div className={"book-card-details"}>
                     {book.img ? <img src={book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
-
-                    <div className={"book-card-div-one"}>
+                    <div>
                         <h5>
-                        {book.author}
-                    </h5>
-                    <h4>
-                        {book.title}
-                    </h4>
-                    <p>
-                        {book.description}
-                    </p>
-                    <text>
-                        Copies : {book.copies}
-                    </text>
-                    <text>
-                        Copies Available : {book.copiesAvailable}
-                    </text>
+                            {book.author}
+                        </h5>
+                        <h4>
+                            {book.title}
+                        </h4>
+                        <p>
+                            <span className={"add-book-p-span"}>Description</span> : {book.description}
+                        </p>
+                        <p>
+                            <span className={"add-book-p-span"}>Copies</span> : {book.copies}
+                        </p>
+                        <p>
+                            <span className={"add-book-p-span"}>Copies Available</span> : {book.copiesAvailable}
+                        </p>
+                    </div>
+                    <div>
+                        <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
+                        {user ? <button onClick={handleCheckoutBook}>Checkout</button> : null}
+                        {user ? <button onClick={handleReturnBook}>Return Book</button> : null}
+                        {isAdmin ?
+                            <>
+                                <button onClick={handleDeleteButton}>Delete</button>
+                                <button onClick={handleIncreaseBookQuantity}>Increase Quantity</button>
+                                <button onClick={handleDecreaseBookQuantity}>Decrease Quantity</button>
+                            </>
+                            :
+                            null
+                        }
+                    </div>
                 </div>
-            </div>
-            <div className={"book-card-div-b"}>
-                <button onClick={handleOnBackGalleryButtonClick}>Back To Gallery</button>
-                {user ? <button onClick={handleCheckoutBook}>Checkout</button> : null}
-                {user ? <button onClick={handleReturnBook}>Return Book</button> : null}
-                {isAdmin ?
-                    <>
-                        <button onClick={handleDeleteButton}>Delete</button>
-                        <button onClick={handleIncreaseBookQuantity}>Increase Quantity</button>
-                        <button onClick={handleDecreaseBookQuantity}>Decrease Quantity</button>
-                    </>
-                    :
-                    null
-                }
-            </div>
         </div>
         </Layout>
     )
 }
-

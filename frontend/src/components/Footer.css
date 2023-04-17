@@ -1,0 +1,11 @@
+.footer {
+    position: relative;
+    bottom: 0;
+    height: 4vh;
+    text-align: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-family: Arial, Tahoma, serif;
+    font-size: 15px;
+    border-top: 1px solid rgba(204, 204, 204, 0.46);
+}

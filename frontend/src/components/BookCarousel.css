@@ -1,9 +1,10 @@
 .book-carousel-img {
-    width: 300px;
-    height: 400px;
+    width: 275px;
+    height: 375px;
     padding: 20px;
     margin: 20px;
-    border-radius: 5px;
+    border-radius: 20%;
+    object-fit: cover;
 }
 
 .book-carousel-div {

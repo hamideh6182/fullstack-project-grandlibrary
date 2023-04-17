@@ -13,30 +13,21 @@ export default function BookCard(props: BookCardProps) {
     }
 
     return (
-        <div>
+        <div className={"book-card-container"}>
             <div className={"book-card"}>
-                <div className={"book-card-div-two"}>
+                <div className={"book-card-details"}>
                     {props.book.img ? <img src={props.book.img} alt="Book"/> : <img src={"/book.jpg"} alt="Book"/>}
-                    <div className={"book-card-div-one"}>
+                    <div>
                         <h5>
                             {props.book.author}
                         </h5>
                         <h4>
                             {props.book.title}
                         </h4>
-                        <p>
-                            {props.book.description}
-                        </p>
-                        <text>
-                            Copies :{props.book.copies}
-                        </text>
-                        <text>
-                            Copies Available :{props.book.copiesAvailable}
-                        </text>
                     </div>
-                </div>
-                <div className={"book-card-div-b"}>
-                    <button onClick={HandleOnDetailsButtonClick}>Details</button>
+                    <div>
+                        <button onClick={HandleOnDetailsButtonClick}>Details</button>
+                    </div>
                 </div>
             </div>
         </div>

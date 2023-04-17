@@ -56,7 +56,7 @@ export default function BooksGallery(props: Props) {
                 <h1 className={"h1-book-gallery"}>
                     Book <span>Gallery</span>
                 </h1>
-                <div>
+                <div className={"search-div"}>
                     <input className={"book-gallery-input"} type="text" placeholder="Search by title" value={searchTerm}
                            onChange={handleSearchInput}/>
                     <select className={"book-gallery-select"} value={selectedCategory} onChange={handleCategorySelect}>
